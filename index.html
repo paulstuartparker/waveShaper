@@ -12,12 +12,18 @@
     <label>frequency</label>
     <input type="range" id="frequency" min="40" max="1760" value="80"></input>
     <label>lfo</input>
-    <input type="range" id="lfo" min="0.0" max="160.0" step=".1" value="0.0"></input>
+    <input type="range" id="lfo" min="0.0" max="440.0" step=".1" value="0.0"></input>
     <br></br>
     <label>distortion</label>
     <input type="range" id="distortion" min="0" max="1000" step="1" value="0"></input>
     <label>distortion vol</label>
     <input type="range" id="distortionVol" min="0.0" max="1.0" step=".01" value="0">
-    <script src="synth.js"></script>
+    <br></br>
+    <label>reverb channel<label>
+    <br></br>
+    <button class='on'>On</button>
+    <input class='reverb-vol' type="range" min="0.0" max="1.0" step=".05" value="0"></input>
+    <span class="reverb-value"></span>
+    <script src="synth.js">0</script>
   </body>
 </html>

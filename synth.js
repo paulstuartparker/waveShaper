@@ -6,6 +6,9 @@ const lfo = audioCtx.createOscillator();
 const masterVol = audioCtx.createGain();
 const distortion = audioCtx.createWaveShaper();
 const distortionVol = audioCtx.createGain();
+const reverb = audioCtx.createConvolver();
+const reverbVol = audioCtx.createGain();
+const masterCompression = audioCtx.createDynamicsCompressor();
 
 const volume = document.getElementById('volume');
 const frequency = document.getElementById('frequency');
