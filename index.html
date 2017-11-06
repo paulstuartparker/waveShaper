@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="style.css"></link>
     <meta charset="utf-8">
     <scipt src="script.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/qwerty-hancock/0.5.1/qwerty-hancock.min.js"></script>
     <title>Synth</title>
   </head>
   <body>
@@ -34,12 +35,10 @@
     <label>Low Pass Filter:</label>
     <br></br>
     <label>Freq</label>
-    <input id='lpf-freq' type='range' step='5' value='22000'></input>
-    <label>Q</label>
-    <input id='lpf-Q' type='range' min='1' max='1000' value='1' step='1'></input>
+    <input id='lpf-freq' type='range' step='5' value='18000' min='40' max='22500'></input>
     <br></br>
     <label>High Pass Filter:</label>
-    <input id='hpf-freq' step='5' type='range' min='10' max='22000'><input>
+    <input id='hpf-freq' step='5' type='range' min='10' max='8000' value='10'></input>
     <br></br>
     <label>compressor:</label>
     <br></br>
@@ -49,8 +48,7 @@
       <input id="knee" type="range" min="0" max="40" value="40" step=".5"></input>
     <label>ratio</label>
       <input id="ratio" type="range" min="1" max="20" value="12" step=".5"></input>
-
-
+      <div id="keyboard"></div>
     <script src="synth.js"></script>
   </body>
 </html>

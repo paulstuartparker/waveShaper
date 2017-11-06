@@ -18,6 +18,19 @@ const lpf = audioCtx.createBiquadFilter();
 hpf.type='highpass';
 lpf.type='lowpass';
 
+const keyboard = new QwertyHancock({
+                 id: 'keyboard',
+                 width: 600,
+                 height: 150,
+                 octaves: 2,
+                 startNote: 'A3',
+                 whiteNotesColour: 'white',
+                 blackNotesColour: 'black',
+                 hoverColour: '#f3e939',
+            });
+
+
+
 
 const volume = document.getElementById('volume');
 const frequency = document.getElementById('frequency');
@@ -34,7 +47,7 @@ const kneeKnob = document.getElementById('knee');
 const ratioKnob = document.getElementById('ratio');
 const lpfFreq = document.getElementById('lpf-freq');
 const lpfQ = document.getElementById('lpf-Q');
-
+const hpfFreq = document.getElementById('hpf-freq');
 osc1.type = 'sine';
 osc1.frequency.value = 80;
 lfo.frequency.value = 0.0;
@@ -82,7 +95,7 @@ masterCompression.connect(audioCtx.destination);
 // masterVol.connect(convolver);
 
 function distortionCurve(amount = 0) {
-  const sampleRate = 22500;
+  const sampleRate = 44100;
   const curve = new Float32Array(sampleRate);
   const deg = Math.PI / 180;
 
@@ -116,7 +129,7 @@ distortionknob.addEventListener('input', function() {
   distortion.curve = distortionCurve(distortionknob.value);
 
 
-  distortion.oversample = '4x';
+  distortion.oversample = '2x';
 });
 
 volume.addEventListener('input', function(){
@@ -156,19 +169,13 @@ ratioKnob.addEventListener('input', function() {
 const minVal = 40;
 const maxVal = audioCtx.sampleRate / 2;
 lpfFreq.min = minVal;
-lpfFreq.max =maxVal;
-// function changeFrequency(element) {
-//   const numOctaves = Math.log(maxVal/minVal) / Math.LN2;
-//   let multiplier = Math.pow(2, numOctaves, element.value - 1.0);
-//   debugger
-//   return maxVal * multiplier;
-// }
+lpfFreq.max = maxVal;
 
 
 lpfFreq.addEventListener('input', function() {
   lpf.frequency.value = lpfFreq.value;
 });
 
-lpfQ.addEventListener('input', function() {
-  lpf.Q.value = lpfQ.value;
+hpfFreq.addEventListener('input', function() {
+  hpf.frequency.value = hpfFreq.value;
 });
