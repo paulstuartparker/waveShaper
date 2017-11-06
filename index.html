@@ -4,26 +4,53 @@
     <link rel="stylesheet" href="style.css"></link>
     <meta charset="utf-8">
     <scipt src="script.js"></script>
-    <title>This Is a Test</title>
+    <title>Synth</title>
   </head>
   <body>
-    <label>volume</label>
+    <label>master volume</label>
     <input type="range" id="volume" max="1" min="0", step=".01" value="0"></input>
+    <label>osc1 vol</label>
+    <input type="range" id="osc1-gain" min="0" max="1" value="0" step=".05"></input
     <label>frequency</label>
     <input type="range" id="frequency" min="40" max="1760" value="80"></input>
-    <label>lfo</input>
+    <label>lfo freq</input>
     <input type="range" id="lfo" min="0.0" max="440.0" step=".1" value="0.0"></input>
+    <label>lfo mix</input>
+    <input type="range" id="lfo-volume" min="0.0" max="1.0" step=".05" value="0.0"></input>
     <br></br>
     <label>distortion</label>
     <input type="range" id="distortion" min="0" max="1000" step="1" value="0"></input>
     <label>distortion vol</label>
-    <input type="range" id="distortionVol" min="0.0" max="1.0" step=".01" value="0">
+    <input type="range" id="distortionVol" min="0.0" max="1.0" step=".01" value="0"></input>
     <br></br>
-    <label>reverb channel<label>
+    <label>reverb channel</label>
     <br></br>
-    <button class='on'>On</button>
-    <input class='reverb-vol' type="range" min="0.0" max="1.0" step=".05" value="0"></input>
-    <span class="reverb-value"></span>
-    <script src="synth.js">0</script>
+    <label>reverb-vol</label>
+    <input id='reverb-vol' type="range" min="0.0" max="1.0" step=".05" value="0"></input>
+    <label>dry</label>
+    <input id='dry' type="range" min="0.0" max="1.0"
+    step=".05" value="0"></input>
+    <br></br>
+    <label>Low Pass Filter:</label>
+    <br></br>
+    <label>Freq</label>
+    <input id='lpf-freq' type='range' step='5' value='22000'></input>
+    <label>Q</label>
+    <input id='lpf-Q' type='range' min='1' max='1000' value='1' step='1'></input>
+    <br></br>
+    <label>High Pass Filter:</label>
+    <input id='hpf-freq' step='5' type='range' min='10' max='22000'><input>
+    <br></br>
+    <label>compressor:</label>
+    <br></br>
+    <label>threshold</label>
+    <input id="threshold" type="range" min="-100" max="0" value="0" step="1"</input>
+    <label>knee<label>
+      <input id="knee" type="range" min="0" max="40" value="40" step=".5"></input>
+    <label>ratio</label>
+      <input id="ratio" type="range" min="1" max="20" value="12" step=".5"></input>
+
+
+    <script src="synth.js"></script>
   </body>
 </html>
