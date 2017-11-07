@@ -23,7 +23,7 @@ const keyboard = new QwertyHancock({
                  width: 600,
                  height: 150,
                  octaves: 2,
-                 startNote: 'C2',
+                 startNote: 'C3',
                  whiteNotesColour: 'white',
                  blackNotesColour: 'black',
                  hoverColour: '#f3e939',
@@ -173,12 +173,12 @@ let intervalId;
 
 keyboard.keyDown = function(note, freq) {
   let now = audioCtx.currentTime;
-  if (!isStop) {
-    if (oscillators[freq]) {
-      oscillators[freq].stop(now);
-      oscillators[Math.floor(freq / 2)].stop(now);
-    }
-   }
+  // if (!isStop) {
+  //   if (oscillators[freq]) {
+  //     oscillators[freq].stop(now);
+  //     oscillators[Math.floor(freq / 2)].stop(now);
+  //   }
+  //  }
   const osc1 = audioCtx.createOscillator();
   osc1.connect(connectorGain);
   osc1.type = 'sine';
@@ -187,39 +187,45 @@ keyboard.keyDown = function(note, freq) {
   osc1.start(now);
   const osc3 = audioCtx.createOscillator();
   osc3.connect(connectorGain);
-  osc3.frequency.value = freq;
+  osc3.frequency.value = (freq * (2 * 2));
   oscillators[Math.floor(freq / 2)] = osc3;
   osc3.start(now);
-  osc3.type = 'sine';
+  osc3.type = 'square';
   connectorGain.gain.cancelScheduledValues(now);
   connectorGain.gain.setValueAtTime(0, Math.floor(now));
   connectorGain.gain.linearRampToValueAtTime(1.0, ((now) + parseInt(attack.value)));
-  isStop = false;
+  // isStop = false;
 };
 
 keyboard.keyUp = function (note, freq) {
-    if (isStop) {
-      return;
-    }
+    // if (isStop) {
+    //   return;
+    // }
     const now = audioCtx.currentTime;
-    const gain = connectorGain.gain;
+    const gain = connectorGain.gain.value;
     connectorGain.gain.cancelScheduledValues( now );
-    connectorGain.gain.setValueAtTime(connectorGain.gain.value, now);
+    connectorGain.gain.setValueAtTime(gain, now);
     // connectorGain.gain.linearRampToValueAtTime(0, (now + parseInt(decay.value)));
-    connectorGain.gain.setTargetAtTime(0, (now), .15);
-    // connectorGain.gain.exponentialRampToValueAtTime(0.000001, now + .05);
+    // connectorGain.gain.exponentialRampToValueAtTime(0.000001, now + .0001);
+
+    oscillators[freq].stop(now + .0001);
+    oscillators[Math.floor(freq / 2)].stop(now + .0001);
+    // connectorGain.gain.linearRampToValueAtTime(0, (now + parseInt(decay.value)));
+    // connectorGain.gain.setTargetAtTime(0, (now), .15);
     // this.osc_node.stop(stop_time + this.decay);
-    intervalId = window.setInterval(function() {
-      if (connectorGain.gain.value < 1e-3) {
-        oscillators[freq].stop(now + .05);
-        oscillators[Math.floor(freq / 2)].stop(now + .05);
-        if (intervalId !== null) {
-          window.clearInterval(intervalId);
-          intervalId = null;
-        }
-        isStop = true;
-      }
-    }, 0);
+    // intervalId = window.setInterval(function() {
+    //   // debugger
+    //   if (connectorGain.gain.value < 1e-3) {
+    //     // debugger
+    //     oscillators[freq].stop();
+    //     oscillators[Math.floor(freq / 2)].stop();
+    //     if (intervalId !== null) {
+    //       window.clearInterval(intervalId);
+    //       intervalId = null;
+    //     }
+    //     isStop = true;
+    //   }
+    // }, 0);
 };
 
 
