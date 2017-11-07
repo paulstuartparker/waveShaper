@@ -8,6 +8,16 @@
     <title>Synth</title>
   </head>
   <body>
+    <label>Initial Gain</label>
+    <input type="range" id="init-gain" min="0" max="1" step=".05"></input>
+    <br></br>
+    <label>Envelope</label>
+    <br></br>
+    <label>Attack</label>
+    <input type="range" id="attack" min="0" max="2" step="0.1" value="0.1"></input>
+    <label>Release</label>
+    <input type="range" id="decay" min="0" max="1" step=".05" value="0.1"></input>
+    <br></br>
     <label>master volume</label>
     <input type="range" id="volume" max="1" min="0", step=".01" value="0"></input>
     <label>osc1 vol</label>
@@ -15,12 +25,12 @@
     <label>frequency</label>
     <input type="range" id="frequency" min="40" max="1760" value="80"></input>
     <label>lfo freq</input>
-    <input type="range" id="lfo" min="0.0" max="440.0" step=".1" value="0.0"></input>
+    <input type="range" id="lfo" min="0.0" max="20.0" step=".5" value="0.0"></input>
     <label>lfo mix</input>
     <input type="range" id="lfo-volume" min="0.0" max="1.0" step=".05" value="0.0"></input>
     <br></br>
     <label>distortion</label>
-    <input type="range" id="distortion" min="0" max="1000" step="1" value="0"></input>
+    <input type="range" id="distortion" min="0" max="200" step="1" value="0"></input>
     <label>distortion vol</label>
     <input type="range" id="distortionVol" min="0.0" max="1.0" step=".01" value="0"></input>
     <br></br>
@@ -35,15 +45,15 @@
     <label>Low Pass Filter:</label>
     <br></br>
     <label>Freq</label>
-    <input id='lpf-freq' type='range' step='5' value='18000' min='40' max='22500'></input>
+    <input id='lpf-freq' type='range' step='5' value='22500' min='40' max='22500'></input>
     <br></br>
     <label>High Pass Filter:</label>
-    <input id='hpf-freq' step='5' type='range' min='10' max='8000' value='10'></input>
+    <input id='hpf-freq' step='5' type='range' min='10' max='4000' value='10'></input>
     <br></br>
     <label>compressor:</label>
     <br></br>
     <label>threshold</label>
-    <input id="threshold" type="range" min="-100" max="0" value="0" step="1"</input>
+    <input id="threshold" type="range" min="-50" max="0" value="0" step="1"</input>
     <label>knee<label>
       <input id="knee" type="range" min="0" max="40" value="40" step=".5"></input>
     <label>ratio</label>

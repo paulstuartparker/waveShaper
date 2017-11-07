@@ -1,5 +1,4 @@
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-const osc1 = audioCtx.createOscillator();
 const osc1Vol = audioCtx.createGain();
 const osc2 = audioCtx.createOscillator();
 const gainNode = audioCtx.createGain();
@@ -15,6 +14,7 @@ const masterCompression = audioCtx.createDynamicsCompressor();
 const dry = audioCtx.createGain();
 const hpf = audioCtx.createBiquadFilter();
 const lpf = audioCtx.createBiquadFilter();
+const connectorGain = audioCtx.createGain();
 hpf.type='highpass';
 lpf.type='lowpass';
 
@@ -23,15 +23,16 @@ const keyboard = new QwertyHancock({
                  width: 600,
                  height: 150,
                  octaves: 2,
-                 startNote: 'A3',
+                 startNote: 'C2',
                  whiteNotesColour: 'white',
                  blackNotesColour: 'black',
                  hoverColour: '#f3e939',
             });
 
 
-
-
+const attack = document.getElementById('attack');
+const decay = document.getElementById('decay');
+const initialGain = document.getElementById('init-gain');
 const volume = document.getElementById('volume');
 const frequency = document.getElementById('frequency');
 const lfoknob = document.getElementById('lfo');
@@ -48,23 +49,19 @@ const ratioKnob = document.getElementById('ratio');
 const lpfFreq = document.getElementById('lpf-freq');
 const lpfQ = document.getElementById('lpf-Q');
 const hpfFreq = document.getElementById('hpf-freq');
-osc1.type = 'sine';
-osc1.frequency.value = 80;
+connectorGain.connect(distortion);
+connectorGain.connect(gainNode);
+connectorGain.connect(osc1Vol);
 lfo.frequency.value = 0.0;
 masterVol.gain.value = volume.value;
-osc1.start();
 lfo.start();
 lfo.connect(gainNode.gain);
-osc1.connect(gainNode);
 gainNode.connect(lfoVol);
 lfoVol.connect(masterVol);
-osc1.connect(distortion);
-osc1.connect(osc1Vol);
 osc1Vol.connect(masterVol);
 
 distortion.connect(distortionVol);
 distortionVol.connect(masterVol);
-
 
 
 
@@ -84,14 +81,14 @@ getSound.onload = function() {
 
 
 //
-gainNode.connect(convolver);
-convolver.connect(reverbVol);
-reverbVol.connect(masterVol);
+// gainNode.connect(convolver);
+// convolver.connect(reverbVol);
+// reverbVol.connect(masterVol);
 masterVol.connect(lpf);
 lpf.connect(hpf);
-hpf.connect(masterCompression);
+hpf.connect(audioCtx.destination);
 // dry.connect(masterCompression);
-masterCompression.connect(audioCtx.destination);
+// masterCompression.connect(audioCtx.destination);
 // masterVol.connect(convolver);
 
 function distortionCurve(amount = 0) {
@@ -136,12 +133,11 @@ volume.addEventListener('input', function(){
   masterVol.gain.value = volume.value;
 
 });
-
-frequency.addEventListener('input', function() {
-  osc1.frequency.value = frequency.value;
-
-});
-
+//
+// frequency.addEventListener('input', function() {
+//   osc1.frequency.value = frequency.value;
+//
+// });
 lfoknob.addEventListener('input', function() {
   lfo.frequency.value = lfoknob.value;
 });
@@ -166,10 +162,65 @@ kneeKnob.addEventListener('input', function() {
 ratioKnob.addEventListener('input', function() {
   masterCompression.ratio.value = ratioKnob.value;
 });
-const minVal = 40;
-const maxVal = audioCtx.sampleRate / 2;
-lpfFreq.min = minVal;
-lpfFreq.max = maxVal;
+// const minVal = 40;
+// const maxVal = audioCtx.sampleRate / 2;
+// lpfFreq.min = minVal;
+// lpfFreq.max = maxVal;
+
+const oscillators = {};
+let isStop = true;
+let intervalId;
+
+keyboard.keyDown = function(note, freq) {
+  let now = audioCtx.currentTime;
+  if (!isStop) {
+    if (oscillators[freq]) {
+      oscillators[freq].stop(now);
+      oscillators[Math.floor(freq / 2)].stop(now);
+    }
+   }
+  const osc1 = audioCtx.createOscillator();
+  osc1.connect(connectorGain);
+  osc1.type = 'sine';
+  osc1.frequency.value = freq;
+  oscillators[freq] = osc1;
+  osc1.start(now);
+  const osc3 = audioCtx.createOscillator();
+  osc3.connect(connectorGain);
+  osc3.frequency.value = freq;
+  oscillators[Math.floor(freq / 2)] = osc3;
+  osc3.start(now);
+  osc3.type = 'sine';
+  connectorGain.gain.cancelScheduledValues(now);
+  connectorGain.gain.setValueAtTime(0, Math.floor(now));
+  connectorGain.gain.linearRampToValueAtTime(1.0, ((now) + parseInt(attack.value)));
+  isStop = false;
+};
+
+keyboard.keyUp = function (note, freq) {
+    if (isStop) {
+      return;
+    }
+    const now = audioCtx.currentTime;
+    const gain = connectorGain.gain;
+    connectorGain.gain.cancelScheduledValues( now );
+    connectorGain.gain.setValueAtTime(connectorGain.gain.value, now);
+    // connectorGain.gain.linearRampToValueAtTime(0, (now + parseInt(decay.value)));
+    connectorGain.gain.setTargetAtTime(0, (now), .15);
+    // connectorGain.gain.exponentialRampToValueAtTime(0.000001, now + .05);
+    // this.osc_node.stop(stop_time + this.decay);
+    intervalId = window.setInterval(function() {
+      if (connectorGain.gain.value < 1e-3) {
+        oscillators[freq].stop(now + .05);
+        oscillators[Math.floor(freq / 2)].stop(now + .05);
+        if (intervalId !== null) {
+          window.clearInterval(intervalId);
+          intervalId = null;
+        }
+        isStop = true;
+      }
+    }, 0);
+};
 
 
 lpfFreq.addEventListener('input', function() {
