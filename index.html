@@ -8,8 +8,34 @@
     <title>Synth</title>
   </head>
   <body>
-    <label>Initial Gain</label>
-    <input type="range" id="init-gain" min="0" max="1" step=".05"></input>
+  <div class="synth-wrapper">
+    <div class="osc1-wrapper">
+      <label>osc1Vol</label>
+      <input type="range" id="osc1-gain" min="0" max="1" step=".05"></input>
+      <label>Waveform</label>
+      <select id="osc1-waveform">
+        <option value="sine">sine</option>
+        <option value="square">square</option>
+        <option value="triangle">triangle</option>
+        <option value="sawtooth">sawtooth</option>
+      </select>
+      <label>Octave</label>
+      <select id="osc1-octave">
+        <option value="-2">-2</option>
+        <option value="-1">-1</option>
+        <option selected="selected "value="0">0(Middle C)</option>
+        <option value="1">+1</option>
+        <option value="2">+2</option>
+      </select>
+    </div>
+
+    <div class="distortion-wrapper">
+      <label>distortion on/off</label>
+      <label class="switch">
+        <input type="checkbox" id="toggle-distortion">
+        <div class="slider round"></div>
+      </label>
+    </div>
     <br></br>
     <label>Envelope</label>
     <br></br>
@@ -20,10 +46,6 @@
     <br></br>
     <label>master volume</label>
     <input type="range" id="volume" max="1" min="0", step=".01" value="0"></input>
-    <label>osc1 vol</label>
-    <input type="range" id="osc1-gain" min="0" max="1" value="0" step=".05"></input
-    <label>frequency</label>
-    <input type="range" id="frequency" min="40" max="1760" value="80"></input>
     <label>lfo freq</input>
     <input type="range" id="lfo" min="0.0" max="20.0" step=".5" value="0.0"></input>
     <label>lfo mix</input>
@@ -59,6 +81,7 @@
     <label>ratio</label>
       <input id="ratio" type="range" min="1" max="20" value="12" step=".5"></input>
       <div id="keyboard"></div>
+    </div>
     <script src="synth.js"></script>
   </body>
 </html>

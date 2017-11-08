@@ -1,6 +1,5 @@
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-const osc1Vol = audioCtx.createGain();
-const osc2 = audioCtx.createOscillator();
+const osc2Vol = audioCtx.createGain();
 const gainNode = audioCtx.createGain();
 const lfo = audioCtx.createOscillator();
 const lfoVol = audioCtx.createGain();
@@ -49,6 +48,9 @@ const ratioKnob = document.getElementById('ratio');
 const lpfFreq = document.getElementById('lpf-freq');
 const lpfQ = document.getElementById('lpf-Q');
 const hpfFreq = document.getElementById('hpf-freq');
+
+
+
 connectorGain.connect(distortion);
 connectorGain.connect(gainNode);
 connectorGain.connect(osc1Vol);
@@ -58,8 +60,8 @@ lfo.start();
 lfo.connect(gainNode.gain);
 gainNode.connect(lfoVol);
 lfoVol.connect(masterVol);
+osc1Vol.connect(distortion);
 osc1Vol.connect(masterVol);
-
 distortion.connect(distortionVol);
 distortionVol.connect(masterVol);
 
@@ -91,6 +93,31 @@ hpf.connect(audioCtx.destination);
 // masterCompression.connect(audioCtx.destination);
 // masterVol.connect(convolver);
 
+//oscillator 1 node
+const osc1Vol = audioCtx.createGain();
+const osc1wave = document.getElementById('osc1-waveform');
+const osc1octave = document.getElementById('osc1-octave');
+const osc1gain = document.getElementById('osc1-gain');
+
+//end oscillator 1
+
+//distortion node
+const distortionCheck = document.getElementById('toggle-distortion');
+distortionCheck.addEventListener("onclick", function() {
+  if (distortionCheck.checked) {
+
+  }
+});
+
+distortionknob.addEventListener('input', function() {
+  distortion.curve = distortionCurve(distortionknob.value);
+  distortion.oversample = '2x';
+});
+
+distortionVolKnob.addEventListener('input', function() {
+  distortionVol.gain.value = distortionVolKnob.value;
+});
+
 function distortionCurve(amount = 0) {
   const sampleRate = 44100;
   const curve = new Float32Array(sampleRate);
@@ -106,9 +133,10 @@ function distortionCurve(amount = 0) {
       )
     );
   }
-
   return curve;
 }
+
+//end distortion node
 
 lfoVolume.addEventListener('input', function(){
   lfoVol.gain.value = lfoVolume.value;
@@ -122,16 +150,8 @@ osc1Gain.addEventListener('input', function() {
   osc1Vol.gain.value = osc1Gain.value;
 });
 
-distortionknob.addEventListener('input', function() {
-  distortion.curve = distortionCurve(distortionknob.value);
-
-
-  distortion.oversample = '2x';
-});
-
 volume.addEventListener('input', function(){
   masterVol.gain.value = volume.value;
-
 });
 //
 // frequency.addEventListener('input', function() {
@@ -142,9 +162,6 @@ lfoknob.addEventListener('input', function() {
   lfo.frequency.value = lfoknob.value;
 });
 
-distortionVolKnob.addEventListener('input', function() {
-  distortionVol.gain.value = distortionVolKnob.value;
-});
 
 reverbVolKnob.addEventListener('input', function() {
   reverbVol.gain.value = reverbVolKnob.value;
@@ -171,30 +188,33 @@ const oscillators = {};
 let isStop = true;
 let intervalId;
 
+const octaveTable = {
+  "-2": .25,
+  "-1": .5,
+  "0": 1,
+  "1": 2,
+  "2": 4
+}
+
 keyboard.keyDown = function(note, freq) {
   let now = audioCtx.currentTime;
-  // if (!isStop) {
-  //   if (oscillators[freq]) {
-  //     oscillators[freq].stop(now);
-  //     oscillators[Math.floor(freq / 2)].stop(now);
-  //   }
-  //  }
   const osc1 = audioCtx.createOscillator();
-  osc1.connect(connectorGain);
-  osc1.type = 'sine';
-  osc1.frequency.value = freq;
+  const osc2 = audioCtx.createOscillator();
+  const lfoOsc = audioCtx.createOscillator();
+  const pinkNoise = audioCtx.createOscillator();
+  osc1.connect(osc1Vol);
+  osc1.type = osc1wave.value;
+  osc1.frequency.value = (freq * octaveTable[osc1octave.value]);
   oscillators[freq] = osc1;
   osc1.start(now);
-  const osc3 = audioCtx.createOscillator();
-  osc3.connect(connectorGain);
-  osc3.frequency.value = (freq * (2 * 2));
-  oscillators[Math.floor(freq / 2)] = osc3;
-  osc3.start(now);
-  osc3.type = 'square';
-  connectorGain.gain.cancelScheduledValues(now);
-  connectorGain.gain.setValueAtTime(0, Math.floor(now));
-  connectorGain.gain.linearRampToValueAtTime(1.0, ((now) + parseInt(attack.value)));
-  // isStop = false;
+  // osc3.connect(connectorGain);
+  // osc3.frequency.value = (freq * (2 * 2));
+  // oscillators[Math.floor(freq / 2)] = osc3;
+  // osc3.start(now);
+  // osc3.type = 'square';
+  // connectorGain.gain.cancelScheduledValues(now);
+  // connectorGain.gain.setValueAtTime(0, now);
+  // connectorGain.gain.exponentialRampToValueAtTime(1.0, ((now) + parseInt(attack.value)));
 };
 
 keyboard.keyUp = function (note, freq) {
@@ -203,13 +223,13 @@ keyboard.keyUp = function (note, freq) {
     // }
     const now = audioCtx.currentTime;
     const gain = connectorGain.gain.value;
-    connectorGain.gain.cancelScheduledValues( now );
-    connectorGain.gain.setValueAtTime(gain, now);
+    // connectorGain.gain.cancelScheduledValues( now );
+    // connectorGain.gain.setValueAtTime(gain, now);
     // connectorGain.gain.linearRampToValueAtTime(0, (now + parseInt(decay.value)));
     // connectorGain.gain.exponentialRampToValueAtTime(0.000001, now + .0001);
 
-    oscillators[freq].stop(now + .0001);
-    oscillators[Math.floor(freq / 2)].stop(now + .0001);
+    oscillators[freq].stop(now);
+    // oscillators[Math.floor(freq / 2)].stop(now + .0001);
     // connectorGain.gain.linearRampToValueAtTime(0, (now + parseInt(decay.value)));
     // connectorGain.gain.setTargetAtTime(0, (now), .15);
     // this.osc_node.stop(stop_time + this.decay);
