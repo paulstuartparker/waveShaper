@@ -238,7 +238,6 @@ function distortionCurve(amount = 0) {
 
 //envelope(attack) section
 gainNode.connect(audioCtx.destination);
-lfo
 // env.connect(gainNode.gain);
 // volume.addEventListener('input', function(){
 //   gainNode.gain.value = volume.value;
@@ -318,7 +317,7 @@ keyboard.keyDown = function(note, freq) {
   osc1.start();
   osc1Vol.connect(preDist);
   osc1Vol.gain.setValueAtTime(0.0001, now)
-  osc1Vol.gain.linearRampToValueAtTime(1.0, (now + parseInt(attack.value)));
+  osc1Vol.gain.exponentialRampToValueAtTime(1.0, (now + parseInt(attack.value)));
   // let gain = gainNode.gain.value;
   // gainNode.gain.cancelScheduledValues(now);
   // gainNode.gain = gain;

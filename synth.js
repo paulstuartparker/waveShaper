@@ -247,7 +247,7 @@ keyboard.keyDown = function(note, freq) {
   osc1.start();
   osc1Vol.connect(preDist);
   osc1Vol.gain.setValueAtTime(0.0001, now)
-  osc1Vol.gain.linearRampToValueAtTime(1.0, (now + parseInt(attack.value)));
+  osc1Vol.gain.exponentialRampToValueAtTime(1.0, (now + parseInt(attack.value)));
   // let gain = gainNode.gain.value;
   // gainNode.gain.cancelScheduledValues(now);
   // gainNode.gain = gain;
