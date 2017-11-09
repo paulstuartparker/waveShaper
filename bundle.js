@@ -124,24 +124,6 @@ const lpfQ = document.getElementById('lpf-Q');
 const hpfFreq = document.getElementById('hpf-freq');
 
 
-
-// connectorGain.connect(distortion);
-// connectorGain.connect(gainNode);
-// connectorGain.connect(osc1Vol);
-// lfo.frequency.value = 0.0;
-// masterVol.gain.value = volume.value;
-// lfo.start();
-// lfo.connect(gainNode.gain);
-// gainNode.connect(lfoVol);
-// lfoVol.connect(masterVol);
-// osc1Vol.connect(distortion);
-// osc1Vol.connect(masterVol);
-// distortion.connect(distortionVol);
-// distortionVol.connect(masterVol);
-
-
-
-//reverb section
 const convolver = audioCtx.createConvolver();
 const reverbBuffer = audioCtx.createBufferSource();
 const getSound = new XMLHttpRequest();
@@ -160,9 +142,9 @@ getSound.onload = function() {
 // gainNode.connect(convolver);
 // convolver.connect(reverbVol);
 // reverbVol.connect(masterVol);
-masterVol.connect(lpf);
-lpf.connect(hpf);
-hpf.connect(audioCtx.destination);
+// gainNode.connect(lpf);
+// lpf.connect(hpf);
+// hpf.connect(audioCtx.destination);
 // dry.connect(masterCompression);
 // masterCompression.connect(audioCtx.destination);
 // masterVol.connect(convolver);
@@ -236,8 +218,11 @@ function distortionCurve(amount = 0) {
 
 //end distortion node
 
-//envelope(attack) section
+
 gainNode.connect(audioCtx.destination);
+// lpf.connect(hpf);
+// hpf.connect(masterVol);
+// masterVol.connect(audioCtx.destination)
 // env.connect(gainNode.gain);
 // volume.addEventListener('input', function(){
 //   gainNode.gain.value = volume.value;
@@ -309,15 +294,19 @@ keyboard.keyDown = function(note, freq) {
   const osc1Vol = audioCtx.createGain();
   const lfoOsc = audioCtx.createOscillator();
   const pinkNoise = audioCtx.createOscillator();
+  const oscFilter = audioCtx.createBiquadFilter();
   osc1.connect(osc1Vol);
   osc1.type = osc1wave.value;
   osc1.frequency.value = (freq * octaveTable[osc1octave.value]);
+  if (gainNodeTable[freq]) {
+    gainNodeTable[freq].gain.cancelScheduledValues(now);
+  }
   oscillators[freq] = osc1;
   gainNodeTable[freq] = osc1Vol;
   osc1.start();
   osc1Vol.connect(preDist);
   osc1Vol.gain.setValueAtTime(0.0001, now)
-  osc1Vol.gain.exponentialRampToValueAtTime(1.0, (now + parseInt(attack.value)));
+  osc1Vol.gain.linearRampToValueAtTime(1.0, (now + parseInt(attack.value)));
   // let gain = gainNode.gain.value;
   // gainNode.gain.cancelScheduledValues(now);
   // gainNode.gain = gain;
@@ -338,7 +327,8 @@ keyboard.keyUp = function (note, freq) {
     // }
     // debugger
     const now = audioCtx.currentTime;
-    const gain = gainNode.gain.value;
+    const gain = gainNodeTable[freq].gain.value;
+    // debugger
     // gainNode.gain.cancelScheduledValues( now );
     // debugger
     // debugger
@@ -361,7 +351,8 @@ keyboard.keyUp = function (note, freq) {
 
     // oscillators[freq].stop(now);
     // env.stop(now);
-    oscillators[freq] = null;
+    // oscillators[freq] = null;
+    // gainNodeTable[freq] = null;
     // oscillators[Math.floor(freq / 2)].stop(now + .0001);
     // connectorGain.gain.linearRampToValueAtTime(0, (now + parseInt(decay.value)));
     // connectorGain.gain.setTargetAtTime(0, (now), .15);
