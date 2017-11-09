@@ -120,7 +120,8 @@ distortionCheck.addEventListener('change', function() {
 });
 
 distortionknob.addEventListener('input', function() {
-  distortion.curve = distortionCurve(distortionknob.value);
+  const curve = new Float32Array(65536);
+  distortion.curve = generateColortouchCurve(curve);
   distortion.oversample = '2x';
 });
 
@@ -128,22 +129,81 @@ distortionVolKnob.addEventListener('input', function() {
   distortionVol.gain.value = distortionVolKnob.value;
 });
 
-function distortionCurve(amount = 0) {
-  const sampleRate = 44100;
-  const curve = new Float32Array(sampleRate);
-  const deg = Math.PI / 180;
+// function distortionCurve(amount = 0) {
+//   const sampleRate = 44100;
+//   const curve = new Float32Array(sampleRate);
+//   const deg = Math.PI / 180;
+//
+//   for (let i = 0; i < sampleRate; ++i) {
+//     const x = (i * 2 / sampleRate) - 1;
+//     curve[i] = (
+//       (
+//         (3 + amount) * x * 20 * deg
+//       ) / (
+//         (amount * Math.abs(x)) + Math.PI
+//       )
+//     );
+//   }
+//   return curve;
+// }
+var threshold = -27; // dB
+var headroom = 21; // dB
 
-  for (let i = 0; i < sampleRate; ++i) {
-    const x = (i * 2 / sampleRate) - 1;
-    curve[i] = (
-      (
-        (3 + amount) * x * 20 * deg
-      ) / (
-        (amount * Math.abs(x)) + Math.PI
-      )
-    );
-  }
-  return curve;
+function dBToLinear(db) {
+    return Math.pow(10.0, 0.05 * db);
+}
+
+function e4(x, k)
+{
+    return 1.0 - Math.exp(-k * x);
+}
+
+
+function shape(x) {
+    var linearThreshold = dBToLinear(threshold);
+    var linearHeadroom = dBToLinear(headroom);
+
+    var maximum = 1.05 * linearHeadroom * linearThreshold;
+    var kk = (maximum - linearThreshold);
+
+    var sign = x < 0 ? -1 : +1;
+    var absx = Math.abs(x);
+
+    var shapedInput = absx < linearThreshold ? absx : linearThreshold + kk * e4(absx - linearThreshold, 1.0 / kk);
+    shapedInput *= sign;
+
+    return shapedInput;
+}
+
+function generateColortouchCurve(curve) {
+    var n = 65536;
+    var n2 = n / 2;
+
+    for (var i = 0; i < n2; ++i) {
+        x = i / n2;
+        x = shape(x);
+
+        curve[n2 + i] = x;
+        curve[n2 - i - 1] = -x;
+    }
+
+    return curve;
+}
+
+
+function generateMirrorCurve(curve) {
+    var n = 65536;
+    var n2 = n / 2;
+
+    for (var i = 0; i < n2; ++i) {
+        x = i / n2;
+        x = shape(x);
+
+        curve[n2 + i] = x;
+        curve[n2 - i - 1] = x;
+    }
+
+    return curve;
 }
 
 //end distortion node
@@ -205,7 +265,7 @@ const oscillators = {};
 let isStop = true;
 let intervalId;
 
-const gainNodeTable = {}
+const gainNodeTable = {};
 
 const octaveTable = {
   "-2": .25,
@@ -215,27 +275,30 @@ const octaveTable = {
   "2": 4
 };
 
-
+let osc1Vol;
 keyboard.keyDown = function(note, freq) {
 
   let now = audioCtx.currentTime;
   const osc1 = audioCtx.createOscillator();
   const osc2 = audioCtx.createOscillator();
-  const osc1Vol = audioCtx.createGain();
   const lfoOsc = audioCtx.createOscillator();
   const pinkNoise = audioCtx.createOscillator();
   const oscFilter = audioCtx.createBiquadFilter();
+  if (gainNodeTable[freq]) {
+    osc1Vol = gainNodeTable[freq];
+    osc1Vol.gain.cancelScheduledValues(now);
+    osc1Vol.gain.setValueAtTime(osc1Vol.gain.value, now);
+  } else {
+    osc1Vol = audioCtx.createGain();
+    osc1Vol.gain.setValueAtTime(0.0001, now);
+  }
   osc1.connect(osc1Vol);
   osc1.type = osc1wave.value;
   osc1.frequency.value = (freq * octaveTable[osc1octave.value]);
-  if (gainNodeTable[freq]) {
-    gainNodeTable[freq].gain.cancelScheduledValues(now);
-  }
   oscillators[freq] = osc1;
   gainNodeTable[freq] = osc1Vol;
   osc1.start();
   osc1Vol.connect(preDist);
-  osc1Vol.gain.setValueAtTime(0.0001, now)
   osc1Vol.gain.linearRampToValueAtTime(1.0, (now + parseInt(attack.value)));
   // let gain = gainNode.gain.value;
   // gainNode.gain.cancelScheduledValues(now);
