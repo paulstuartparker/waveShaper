@@ -1,0 +1,28 @@
+{
+  "name": "synthesizer",
+  "version": "1.0.0",
+  "description": "synth",
+  "main": "index.html",
+  "scripts": {
+    "test": "test",
+    "build": "webpack --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/paulstuartparker/jSynth.git"
+  },
+  "keywords": [
+    "synth"
+  ],
+  "author": "paul",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/paulstuartparker/jSynth/issues"
+  },
+  "homepage": "https://github.com/paulstuartparker/jSynth#readme",
+  "dependencies": {
+    "audio-contour": "0.0.1",
+    "envelope-generator": "^3.0.0",
+    "fastidious-envelope-generator": "^2.0.0"
+  }
+}
