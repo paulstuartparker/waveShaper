@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Josefin+Slab" />
     <link rel="stylesheet" href="style.css"></link>
     <meta charset="utf-8">
     <scipt src="script.js"></script>
@@ -8,85 +9,93 @@
     <title>Synth</title>
   </head>
   <body>
-  <div class="synth-wrapper">
-    <div class="osc1-wrapper">
-      <label>osc1Vol</label>
-      <input type="range" id="osc1-gain" min="0" max="1" step=".05"></input>
-      <label>Waveform</label>
-      <select id="osc1-waveform">
-        <option value="sine">sine</option>
-        <option value="square">square</option>
-        <option value="triangle">triangle</option>
-        <option value="sawtooth">sawtooth</option>
-      </select>
-      <label>Octave</label>
-      <select id="osc1-octave">
-        <option value="-2">-2</option>
-        <option value="-1">-1</option>
-        <option selected="selected "value="0">0(Middle C)</option>
-        <option value="1">+1</option>
-        <option value="2">+2</option>
-      </select>
+  <div class="page-wrapper">
+    <div class="synth-wrapper">
+      <div class="osc1-wrapper">
+        <div class="wrap-text-slider">
+        <div class="osc1-text">OSC 1</div>
+        <input type="range" id="osc1-gain" min="0" max="1" step=".05"></input>
+      </div>
+        <label>Waveform</label>
+        <div class="wave-dropdown">
+        <select id="osc1-waveform">
+        <div class="wave-dropdown-content">
+          <option value="sine">sine</option>
+          <option value="square">square</option>
+          <option value="triangle">triangle</option>
+          <option value="sawtooth">sawtooth</option>
+        </div>
+      </div>
+        </select>
+        <label>Octave</label>
+        <select id="osc1-octave">
+          <option value="-2">-2</option>
+          <option value="-1">-1</option>
+          <option selected="selected "value="0">0(Middle C)</option>
+          <option value="1">+1</option>
+          <option value="2">+2</option>
+        </select>
+      </div>
+
+      <div class="distortion-wrapper">
+        <label>distortion on/off</label>
+        <label class="switch">
+          <input type="checkbox" id="toggle-distortion">
+          <div class="slider round"></div>
+        </label>
+
+      </div>
     </div>
 
-    <div class="distortion-wrapper">
-      <label>distortion on/off</label>
-      <label class="switch">
-        <input type="checkbox" id="toggle-distortion">
-        <div class="slider round"></div>
-      </label>
+      <div class="envelope wrapper">
+        <label>Envelope</label>
+        <label>Attack</label>
+        <input type="range" id="attack" min=".3" max="2.5" step="0.1" value=".5"></input>
+        <label>Release</label>
+        <input type="range" id="decay" min=".5" max="3" step=".1" value="0.7"></input>
+      </div>
 
-    </div>
-    <br></br>
-    <div class="envelope wrapper">
-      <label>Envelope</label>
-      <label>Attack</label>
-      <input type="range" id="attack" min=".3" max="2.5" step="0.1" value=".5"></input>
-      <label>Release</label>
-      <input type="range" id="decay" min=".5" max="3" step=".1" value="0.7"></input>
-    </div>
-    <br></br>
-    <label>master volume</label>
-    <input type="range" id="volume" max="1" min="0", step=".01" value="0"></input>
-    <div class="lfoWrapper">
-      <label>Toggle LFO</label>
-      <label class="switch">
-        <input type="checkbox" id="toggle-lfo">
-        <div class="slider round"></div>
-      </label>
-      <label>lfo freq</input>
-      <input type="range" id="lfo" min="0.0" max="20.0" step=".5" value="0.0"></input>
-      <label>lfo mix</input>
-      <input type="range" id="lfo-volume" min="0.0" max="1.0" step=".05" value="0.0"></input>
-    </div>
-    <br></br>
-    <!-- <br></br> -->
-    <!-- <label>reverb channel</label>
-    <br></br>
-    <label>reverb-vol</label>
-    <input id='reverb-vol' type="range" min="0.0" max="1.0" step=".05" value="0"></input> -->
-    <!-- <label>dry</label>
-    <input id='dry' type="range" min="0.0" max="1.0"
-    step=".05" value="0"></input>
-    <br></br> -->
-    <label>Low Pass Filter:</label>
-    <br></br>
-    <label>Freq</label>
-    <input id='lpf-freq' type='range' step='5' value='12025' min='40' max='12025'></input>
-    <br></br>
-    <label>High Pass Filter:</label>
-    <input id='hpf-freq' step='5' type='range' min='10' max='4000' value='10'></input>
-    <br></br>
-    <!-- <label>compressor:</label>
-    <br></br>
-    <label>threshold</label>
-    <input id="threshold" type="range" min="-50" max="0" value="0" step="1"</input>
-    <label>knee<label>
-      <input id="knee" type="range" min="0" max="40" value="40" step=".5"></input>
-    <label>ratio</label>
-      <input id="ratio" type="range" min="1" max="20" value="12" step=".5"></input> -->
-      <div id="keyboard"></div>
-    </div>
+      <label>master volume</label>
+      <input type="range" id="volume" max="1" min="0", step=".01" value="0"></input>
+      <div class="lfoWrapper">
+        <label>Toggle LFO</label>
+        <label class="switch">
+          <input type="checkbox" id="toggle-lfo">
+          <div class="slider round"></div>
+        </label>
+        <label>lfo freq</input>
+        <input type="range" id="lfo" min="0.5" max="12.0" step=".5" value="0.5"></input>
+        <label>lfo mix</input>
+        <input type="range" id="lfo-volume" min="0.0" max="1.0" step=".05" value="0.0"></input>
+      </div>
+
+      <!-- <br></br> -->
+      <!-- <label>reverb channel</label>
+      <br></br>
+      <label>reverb-vol</label>
+      <input id='reverb-vol' type="range" min="0.0" max="1.0" step=".05" value="0"></input> -->
+      <!-- <label>dry</label>
+      <input id='dry' type="range" min="0.0" max="1.0"
+      step=".05" value="0"></input>
+      <br></br> -->
+      <label>Low Pass Filter:</label>
+
+      <label>Freq</label>
+      <input id='lpf-freq' type='range' step='5' value='12025' min='40' max='12025'></input>
+
+      <label>High Pass Filter:</label>
+      <input id='hpf-freq' step='5' type='range' min='10' max='4000' value='10'></input>
+
+      <!-- <label>compressor:</label>
+      <br></br>
+      <label>threshold</label>
+      <input id="threshold" type="range" min="-50" max="0" value="0" step="1"</input>
+      <label>knee<label>
+        <input id="knee" type="range" min="0" max="40" value="40" step=".5"></input>
+      <label>ratio</label>
+        <input id="ratio" type="range" min="1" max="20" value="12" step=".5"></input> -->
+        <div id="keyboard" class="keyboard"></div>
+      </div>
     <script src="bundle.js"></script>
   </body>
 </html>

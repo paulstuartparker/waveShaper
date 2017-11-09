@@ -94,7 +94,7 @@ const keyboard = new QwertyHancock({
                  width: 600,
                  height: 150,
                  octaves: 2,
-                 startNote: 'C3',
+                 startNote: 'c3',
                  whiteNotesColour: 'white',
                  blackNotesColour: 'black',
                  hoverColour: '#f3e939',
@@ -131,6 +131,10 @@ getSound.onload = function() {
   getSound.send();
 };
 
+// document.addEventListener('keydown', function(e){
+//   debugger
+//   return null;
+// });
 
 // osc1
 distortionVol.gain.value = 1;
@@ -177,9 +181,6 @@ distortionCheck.addEventListener('change', function() {
   }
 });
 
-// distortionVolKnob.addEventListener('input', function() {
-//   distortionVol.gain.value = distortionVolKnob.value;
-// });
 
 
 var threshold = -27; // dB
@@ -248,23 +249,6 @@ distortion.oversample = '2x';
 //end distortion node
 
 
-//
-// reverbVolKnob.addEventListener('input', function() {
-//   reverbVol.gain.value = reverbVolKnob.value;
-//
-// });
-// 
-// thresholdKnob.addEventListener('input', function() {
-//   masterCompression.threshold.value = thresholdKnob.value;
-// });
-//
-// kneeKnob.addEventListener('input', function() {
-//   masterCompression.knee.value = kneeKnob.value;
-// });
-//
-// ratioKnob.addEventListener('input', function() {
-//   masterCompression.ratio.value = ratioKnob.value;
-// });
 
 const oscillators = {};
 let isStop = true;
