@@ -1,21 +1,15 @@
-const Contour = require('audio-contour');
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 const lfoVol = audioCtx.createGain();
 const masterVol = audioCtx.createGain();
 const distortion = audioCtx.createWaveShaper();
 const distortionVol = audioCtx.createGain();
-const reverb = audioCtx.createConvolver();
-const reverbVol = audioCtx.createGain();
-const splitter = audioCtx.createChannelSplitter();
-const masterCompression = audioCtx.createDynamicsCompressor();
 const dry = audioCtx.createGain();
 const hpf = audioCtx.createBiquadFilter();
 const lpf = audioCtx.createBiquadFilter();
 const lpf2 = audioCtx.createBiquadFilter();
 const connectorGain = audioCtx.createGain();
 const gainNode = audioCtx.createGain();
-// const env = Contour(audioCtx);
-// env.duration = 2;
+
 
 hpf.type='highpass';
 lpf.type='lowpass';
@@ -41,33 +35,11 @@ const volume = document.getElementById('volume');
 const lfoknob = document.getElementById('lfo');
 const distortionknob = document.getElementById('distortion');
 const distortionVolKnob = document.getElementById('distortionVol');
-const reverbVolKnob = document.getElementById('reverb-vol');
-const reverbButton = document.getElementById('reverb-button');
 const lfoVolume = document.getElementById('lfo-volume');
-const thresholdKnob = document.getElementById('threshold');
-const kneeKnob = document.getElementById('knee');
-const ratioKnob = document.getElementById('ratio');
 const lpfFreq = document.getElementById('lpf-freq');
 const hpfFreq = document.getElementById('hpf-freq');
 
 
-const convolver = audioCtx.createConvolver();
-const reverbBuffer = audioCtx.createBufferSource();
-const getSound = new XMLHttpRequest();
-getSound.open('GET', 'stalbans_a_mono.wav', true);
-getSound.responseType="arraybuffer";
-getSound.onload = function() {
-  audioCtx.decodeAudioData(getSound.response, function(buffer){
-    console.log(buffer);
-    convolver.buffer = buffer;
-  });
-  getSound.send();
-};
-
-// document.addEventListener('keydown', function(e){
-//   debugger
-//   return null;
-// });
 
 // osc1
 
@@ -96,7 +68,7 @@ postAttackGain2.addEventListener('input', function() {
 preDist.gain.value = .9;
 osc2VolumePreFilter.connect(lpf);
 osc1VolumePreFilter.connect(lpf);
-// prefilterfilter.connect(lpf);
+
 let distConnected = false;
 connectOsc1();
 const analyser = audioCtx.createAnalyser();
@@ -139,8 +111,8 @@ distortionCheck.addEventListener('change', function() {
 
 
 
-var threshold = -27; // dB
-var headroom = 21; // dB
+var threshold = -27;
+var headroom = 21;
 
 function dBToLinear(db) {
     return Math.pow(10.0, 0.05 * db);
@@ -246,17 +218,13 @@ hpfFreq.addEventListener('input', function() {
   hpf.frequency.value = logSlider(parseInt(hpfFreq.value), 10, 22050);
 });
 
-// const pinkNoise = audioCtx.createOscillator();
 
 const lfoOn = document.getElementById('toggle-lfo');
-// lfoOut.gain.value = 0;
+
 lfoVolume.addEventListener('input', function(){
   lfoOut.gain.value = lfoVolume.value;
 });
 
-// dry.addEventListener('input', function() {
-//   dry.gain.value = dryKnob.value;
-// });
 
 
 
@@ -270,7 +238,6 @@ const lfo = audioCtx.createOscillator();
 const lfoOut = audioCtx.createGain();
 lfoOut.gain.value = .2;
 lfo.connect(lfoVol.gain);
-// lfo.frequency.value = lfoknob.value;
 lfoVol.connect(lfoOut);
 lfoOut.connect(lpf);
 lfo.start();
