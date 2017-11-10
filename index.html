@@ -79,7 +79,7 @@
           </div>
           <div class="release-wrapper">
             <div class="release-text">Release</div>
-            <input type="range" id="decay" min=".5" max="3" step=".1" value="0.7"></input>
+            <input type="range" id="decay" min=".5" max="16" step=".1" value="1"></input>
           </div>
         </div>
 
@@ -89,25 +89,29 @@
     <div class="low-pass-wrapper">
       <div class="low-pass-text">Low Pass Filter</div>
       <div class="low-pass-slider-wrapper">
-        <input id='lpf-freq' type='range' step='5' value='12025' min='40' max='12025'></input>
+        <input id='lpf-freq' type='range' step='5' value='19000' min='40' max='19000'></input>
       </div>
     </div>
     <div class="highpass-wrapper">
       <div class="highpass-text">High Pass Filter</div>
       <div class="highpass-slider-wrapper">
-        <input id='hpf-freq' step='5' type='range' min='10' max='4000' value='10'></input>
+        <input id='hpf-freq' step='5' type='range' min='10' max='18000' value='10'></input>
       </div>
     </div>
     <div class="master-vol-wrapper">
         <div class="master-vol-text">Master Volume</div>
         <div class="master-vol-slider-wrapper">
-          <input type="range" id="volume" max="1" min="0", step=".01" value="0"></input>
+          <input type="range" id="volume" max="1" min="0", step=".01" value="0.5"></input>
         </div>
     </div>
     </div>
       </div>
-      <div class="keyboard-wrapper">
-        <div id="keyboard" class="keyboard"></div>
+      <div class="page-bottom">
+        <canvas class="canvas" id="my-canvas">
+        </canvas>
+        <div class="keyboard-wrapper">
+          <div id="keyboard" class="keyboard"></div>
+        </div>
       </div>
     <script src="bundle.js"></script>
   </body>
