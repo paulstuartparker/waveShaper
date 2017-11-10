@@ -319,7 +319,7 @@ hpfFreq.addEventListener('input', function() {
 // const pinkNoise = audioCtx.createOscillator();
 
 const lfoOn = document.getElementById('toggle-lfo');
-
+// lfoOut.gain.value = 0;
 lfoVolume.addEventListener('input', function(){
   lfoOut.gain.value = lfoVolume.value;
 });
@@ -338,6 +338,7 @@ lfoknob.addEventListener('input', function() {
 const lfoTable = {};
 const lfo = audioCtx.createOscillator();
 const lfoOut = audioCtx.createGain();
+lfoOut.gain.value = .2;
 lfo.connect(lfoVol.gain);
 // lfo.frequency.value = lfoknob.value;
 lfoVol.connect(lfoOut);
