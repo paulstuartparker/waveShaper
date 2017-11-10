@@ -142,7 +142,7 @@ getSound.onload = function() {
 // osc1
 const prefilterfilter = audioCtx.createBiquadFilter;
 prefilterfilter.type = 'lowpass';
-distortionVol.gain.value = 1.2;
+distortionVol.gain.value = 1.6;
 const osc1VolumePreFilter = audioCtx.createGain();
 const preDist = audioCtx.createGain();
 const osc1wave = document.getElementById('osc1-waveform');
