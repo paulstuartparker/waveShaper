@@ -277,7 +277,7 @@ const octaveTable = {
   "1": 2,
   "2": 4
 };
-lpf.frequency = 22000;
+lpf.frequency = 22050;
 hpf.frequency.value = 5;
 hpf.Q = .9;
 lpf.connect(hpf);
@@ -294,11 +294,11 @@ function logSlider(val, minL, maxL) {
 
 
 lpfFreq.addEventListener('input', function() {
-  lpf.frequency.value = logSlider(lpfFreq.value, 40, 22050);
+  lpf.frequency.value = logSlider(parseInt(lpfFreq.value), 40, 22050);
 });
 
 hpfFreq.addEventListener('input', function() {
-  hpf.frequency.value = hpfFreq.value;
+  hpf.frequency.value = logSlider(parseInt(hpfFreq.value), 10, 22050);
 });
 // const osc2 = audioCtx.createOscillator();
 // const pinkNoise = audioCtx.createOscillator();
