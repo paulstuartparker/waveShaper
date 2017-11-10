@@ -240,7 +240,7 @@ input[type=range]:focus::-webkit-slider-runnable-track {
   height: 80px;
   width: 200px;
   margin-top: 10px;
-  margin-left: 70px;
+  margin-left: 10px;
 }
 
 .page-wrapper {
@@ -447,6 +447,55 @@ input:checked + .slider:before {
   text-align: center;
 }
 
+.credit {
+  font-size: 12px;
+}
+
 .github {
   text-decoration: none;
+}
+
+.distortion-download-row-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.sound-player {
+  width: 150px;
+}
+
+.record-button {
+  font-family: "Josefin Slab";
+  width: 100px;
+  height: 40px;
+}
+
+.download-button {
+  font-family: "Josefin Slab";
+  width: 100px;
+  height: 40px;
+}
+
+.download-button:hover {
+  
+}
+
+.recorder {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 250px;
+  height: 80px;
+  background-color: whitesmoke;
+  border: 3px solid lightgray;
+  margin-top: 10px;
+  margin-right: 30px;
+  text-align: center;
 }

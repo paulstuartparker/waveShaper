@@ -369,3 +369,56 @@ function draw() {
 }
 
 draw();
+
+
+
+//media record
+let clicked = false;
+let chunks = [];
+const dest = audioCtx.createMediaStreamDestination();
+const mediaRecorder = new MediaRecorder(dest.stream);
+const trigger = document.getElementById('record');
+const downloadButton = document.getElementById('download');
+downloadButton.onclick = download;
+lpf2.connect(dest);
+trigger.addEventListener('click', function(e) {
+  if(!clicked) {
+    chunks = [];
+    mediaRecorder.start();
+    e.target.innerHTML = "Stop";
+    clicked = true;
+  } else {
+    mediaRecorder.requestData();
+    mediaRecorder.stop();
+    e.target.innerHTML = "Record";
+    clicked = false;
+  }
+});
+
+
+mediaRecorder.ondataavailable = function(evt) {
+  chunks.push(evt.data);
+};
+
+mediaRecorder.onstop = function(evt) {
+  let blob = new Blob(chunks, {'type':'audio/ogg; codecs=opus'});
+  let audioTag = document.createElement('audio');
+  document.querySelector('audio').src = URL.createObjectURL(blob);
+};
+
+function download() {
+  let blob = new Blob(chunks, {
+    type: 'audio/ogg; codec=opus'
+  });
+    let url = window.URL.createObjectURL(blob);
+    let a = document.createElement('a');
+    a.style.display = 'none';
+    a.href = url;
+    a.download = 'synth_recording.ogg';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function() {
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    }, 100);
+  }
