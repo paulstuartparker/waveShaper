@@ -20,11 +20,11 @@ const gainNode = audioCtx.createGain();
 hpf.type='highpass';
 lpf.type='lowpass';
 lpf2.type = "lowpass";
-lpf2.frequency = 19000;
+lpf2.frequency = 22050;
 
 const keyboard = new QwertyHancock({
                  id: 'keyboard',
-                 width: 600,
+                 width: 500,
                  height: 100,
                  octaves: 2,
                  startNote: 'c3',
@@ -70,19 +70,31 @@ getSound.onload = function() {
 // });
 
 // osc1
-const prefilterfilter = audioCtx.createBiquadFilter;
-prefilterfilter.type = 'lowpass';
+
+const osc2VolumePreFilter = audioCtx.createGain();
 distortionVol.gain.value = 2.0;
 const osc1VolumePreFilter = audioCtx.createGain();
 osc1VolumePreFilter.gain.value = .3;
+osc2VolumePreFilter.gain.value = 0;
+
 const preDist = audioCtx.createGain();
 const osc1wave = document.getElementById('osc1-waveform');
 const osc1octave = document.getElementById('osc1-octave');
 const postAttackGain = document.getElementById('osc1-gain');
+const osc2wave = document.getElementById('osc2-waveform');
+const osc2octave = document.getElementById('osc2-octave');
+const postAttackGain2 = document.getElementById('osc2-gain');
+
+
+
 postAttackGain.addEventListener('input', function() {
   osc1VolumePreFilter.gain.value = postAttackGain.value;
 });
-preDist.gain.value = 1;
+postAttackGain2.addEventListener('input', function() {
+  osc2VolumePreFilter.gain.value = postAttackGain2.value;
+});
+preDist.gain.value = .9;
+osc2VolumePreFilter.connect(lpf);
 osc1VolumePreFilter.connect(lpf);
 // prefilterfilter.connect(lpf);
 let distConnected = false;
@@ -207,9 +219,12 @@ const octaveTable = {
   "1": 2,
   "2": 4
 };
-lpf.frequency = 22050;
+
+
+lpf.frequency.value = 22050;
 hpf.frequency.value = 5;
-hpf.Q = .9;
+hpf.Q = 2;
+lpf.Q = 2;
 lpf.connect(hpf);
 hpf.connect(preDist);
 
@@ -230,7 +245,7 @@ lpfFreq.addEventListener('input', function() {
 hpfFreq.addEventListener('input', function() {
   hpf.frequency.value = logSlider(parseInt(hpfFreq.value), 10, 22050);
 });
-// const osc2 = audioCtx.createOscillator();
+
 // const pinkNoise = audioCtx.createOscillator();
 
 const lfoOn = document.getElementById('toggle-lfo');
@@ -267,21 +282,32 @@ function rampLfo(now, LfoOsc, lfoGain, lfoGainVol){
   LfoOsc.connect(lfoGain);
 
   lfoGainVol.connect(lfoVol);
-  // lfoGain.connect(Osc.frequency);
-  // Osc.connect(lfoVol);
 }
-
+let osc2Vol;
 let osc1Vol;
 keyboard.keyDown = function(note, freq) {
   let now = audioCtx.currentTime;
   const oscFilter = audioCtx.createBiquadFilter();
   const osc1 = audioCtx.createOscillator();
+  const osc2 = audioCtx.createOscillator();
+  if (oscillators[freq + 20000]) {
+    oscillators[freq + 20000].stop(now);
+  }
   if (oscillators[freq]) {
     oscillators[freq].stop(now);
   }
   if (oscillators[freq + 6000]) {
     oscillators[freq + 6000].stop(now);
   }
+  if (gainNodeTable[freq + 20000]) {
+    osc2Vol = gainNodeTable[freq + 20000];
+    osc2Vol.gain.cancelScheduledValues(now);
+    osc2Vol.gain.setValueAtTime(osc2Vol.gain.value, now);
+  } else {
+    osc2Vol = audioCtx.createGain();
+    osc2Vol.gain.setValueAtTime(0, now);
+  }
+
   if (gainNodeTable[freq]) {
     osc1Vol = gainNodeTable[freq];
     osc1Vol.gain.cancelScheduledValues(now);
@@ -295,9 +321,18 @@ keyboard.keyDown = function(note, freq) {
   osc1.frequency.value = (freq * octaveTable[osc1octave.value]);
   oscillators[freq] = osc1;
   gainNodeTable[freq] = osc1Vol;
+  oscillators[freq + 20000] = osc2;
+  gainNodeTable[freq + 20000] = osc2Vol;
+  osc2.connect(osc2Vol);
+  osc2.type = osc2wave.value;
+  osc2.frequency.value = (freq * octaveTable[osc2octave.value]);
+  osc2Vol.connect(osc2VolumePreFilter);
   osc1Vol.connect(osc1VolumePreFilter);
   osc1Vol.gain.linearRampToValueAtTime(osc1VolumePreFilter.gain.value, (now + parseInt(attack.value)));
+  osc2Vol.gain.linearRampToValueAtTime(osc2VolumePreFilter.gain.value, (now + parseInt(attack.value)));
+
   osc1.start();
+  osc2.start();
   if (lfoOn.checked) {
     // debugger
     const lfoGain = audioCtx.createGain();
@@ -315,15 +350,21 @@ keyboard.keyDown = function(note, freq) {
 keyboard.keyUp = function(note, freq) {
     const now = audioCtx.currentTime;
     const gain = gainNodeTable[freq].gain.value;
+    const gain2 = gainNodeTable[freq + 20000].gain.value;
     gainNodeTable[freq].gain.cancelScheduledValues(now);
     gainNodeTable[freq].gain.setValueAtTime(gain, now);
     gainNodeTable[freq].gain.exponentialRampToValueAtTime(0.0001, now + parseInt(decay.value));
+    // debugger
+    gainNodeTable[freq + 20000].gain.cancelScheduledValues(now);
+    gainNodeTable[freq + 20000].gain.setValueAtTime(gain2, now);
+    gainNodeTable[freq + 20000].gain.exponentialRampToValueAtTime(0.0001, now + parseInt(decay.value));
     oscillators[freq].stop(now + parseInt(decay.value));
+    oscillators[freq + 20000].stop(now + parseInt(decay.value));
+
     if (oscillators[freq + 6000]) {
       oscillators[freq + 6000].stop(now + parseInt(decay.value));
     }
     if (lfoTable[freq] ) {
-      // debugger
       let lfoGain = lfoTable[freq + 12025];
       lfoGain.gain.cancelScheduledValues(now);
       lfoGain.gain.setValueAtTime(lfoVol.gain.value, now);
@@ -335,7 +376,7 @@ const ctx = document.getElementById('my-canvas');
 const canvas = ctx.getContext('2d');
 analyser.fftSize = 2048;
 const bufferLength = analyser.frequencyBinCount;
-const WIDTH = 500;
+const WIDTH = 400;
 const HEIGHT = 150;
 
 function draw() {
@@ -354,7 +395,7 @@ function draw() {
     let offset = HEIGHT - height - 1;
     const barWidth = WIDTH / bufferLength;
     canvas.fillStyle = 'black';
-    canvas.fillRect(i * barWidth, offset, 1, 1)
+    canvas.fillRect(i * barWidth, offset, 1, 1);
   }
 
 }

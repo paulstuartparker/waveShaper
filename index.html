@@ -15,7 +15,7 @@
           <div class="osc1-wrapper">
             <div class="wrap-text-slider">
             <div class="osc1-text">OSC 1</div>
-            <input type="range" id="osc1-gain" min="0" max=".8" step=".05"></input>
+            <input type="range" id="osc1-gain" min="0" max=".6" step=".05"></input>
           </div>
           <div class="dropdowns-container">
             <div class="wave-dropdown">
@@ -41,6 +41,37 @@
             </div>
           </div>
         </div>
+        <!--  -->
+        <div class="osc2-wrapper">
+          <div class="wrap-text-slider">
+          <div class="osc2-text">OSC 2</div>
+          <input type="range" id="osc2-gain" min="0" max=".6" step=".05" value="0"></input>
+        </div>
+        <div class="dropdown2-container">
+          <div class="wave-dropdown">
+          <label>Waveform</label>
+            <select id="osc2-waveform" class="dropdown">
+            <div class="wave-dropdown-content">
+              <option value="sine">sine</option>
+              <option value="square">square</option>
+              <option value="triangle">triangle</option>
+              <option value="sawtooth">sawtooth</option>
+            </div>
+        </select>
+        </div>
+        <div class="octave-dropdown">
+          <label>Octave</label>
+          <select id="osc2-octave" class="dropdown">
+            <option value="-2">-2</option>
+            <option value="-1">-1</option>
+            <option selected="selected "value="0">Middle C</option>
+            <option value="1">+1</option>
+            <option value="2">+2</option>
+          </select>
+          </div>
+        </div>
+      </div>
+        <!--  -->
         <div class="lfo-container">
           <div class="label-switch-container">
             <label class="lfo-title">LFO</label>
@@ -82,7 +113,8 @@
             <input type="range" id="decay" min=".5" max="16" step=".1" value="1"></input>
           </div>
         </div>
-
+        <canvas class="canvas" id="my-canvas">
+        </canvas>
 
       </div>
     <div class="right-synth">
@@ -104,11 +136,15 @@
           <input type="range" id="volume" max="1" min="0", step=".01" value="0.5"></input>
         </div>
     </div>
+    <div class="links-container">
+      <div class="created">Created By Paul Parker</div>
+      <div class="year">2017</div>
+      <div class='email'>paulstuartparker@gmail.com</div>
+      <div class="github"><a href="https://github.com/paulstuartparker/" class="github">GitHub</a></div>
+    </div>
     </div>
       </div>
       <div class="page-bottom">
-        <canvas class="canvas" id="my-canvas">
-        </canvas>
         <div class="keyboard-wrapper">
           <div id="keyboard" class="keyboard"></div>
         </div>
