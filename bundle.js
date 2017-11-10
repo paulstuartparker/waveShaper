@@ -330,8 +330,11 @@ function rampLfo(now, LfoOsc, lfoGain, lfoGainVol){
 let osc1Vol;
 keyboard.keyDown = function(note, freq) {
   let now = audioCtx.currentTime;
-  const osc1 = audioCtx.createOscillator();
   const oscFilter = audioCtx.createBiquadFilter();
+  const osc1 = audioCtx.createOscillator();
+  if (oscillators[freq]) {
+    oscillators[freq].stop(now);
+  }
   if (gainNodeTable[freq]) {
     osc1Vol = gainNodeTable[freq];
     osc1Vol.gain.cancelScheduledValues(now);
