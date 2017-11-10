@@ -72,7 +72,7 @@ getSound.onload = function() {
 // osc1
 const prefilterfilter = audioCtx.createBiquadFilter;
 prefilterfilter.type = 'lowpass';
-distortionVol.gain.value = 1.6;
+distortionVol.gain.value = 2.0;
 const osc1VolumePreFilter = audioCtx.createGain();
 osc1VolumePreFilter.gain.value = .3;
 const preDist = audioCtx.createGain();
@@ -82,7 +82,7 @@ const postAttackGain = document.getElementById('osc1-gain');
 postAttackGain.addEventListener('input', function() {
   osc1VolumePreFilter.gain.value = postAttackGain.value;
 });
-preDist.gain.value = .8;
+preDist.gain.value = 1;
 osc1VolumePreFilter.connect(lpf);
 // prefilterfilter.connect(lpf);
 let distConnected = false;
@@ -213,8 +213,18 @@ hpf.Q = .9;
 lpf.connect(hpf);
 hpf.connect(preDist);
 
+function logSlider(val, minL, maxL) {
+  let min = 0;
+  let max = 100;
+  let minLval = Math.log(minL);
+  let maxLval = Math.log(maxL);
+  let scale = (maxLval - minLval) / (max - min);
+  return Math.exp((val - min) * scale + minLval);
+}
+
+
 lpfFreq.addEventListener('input', function() {
-  lpf.frequency.value = lpfFreq.value;
+  lpf.frequency.value = logSlider(lpfFreq.value, 40, 22050);
 });
 
 hpfFreq.addEventListener('input', function() {
