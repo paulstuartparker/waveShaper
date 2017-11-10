@@ -206,6 +206,9 @@ const octaveTable = {
   "1": 2,
   "2": 4
 };
+lpf.frequency = 22000;
+hpf.frequency.value = 5;
+hpf.Q = .9;
 lpf.connect(hpf);
 hpf.connect(preDist);
 
@@ -249,7 +252,7 @@ function rampLfo(now, LfoOsc, lfoGain, lfoGainVol){
   lfoGain.connect(lfoGainVol);
   lfoGain.gain.cancelScheduledValues(now);
   lfoGain.gain.setValueAtTime(0, now);
-  lfoGain.gain.linearRampToValueAtTime(0.8, (now + parseInt(attack.value)));
+  lfoGain.gain.linearRampToValueAtTime(0.3, (now + parseInt(attack.value)));
   LfoOsc.connect(lfoGain);
 
   lfoGainVol.connect(lfoVol);
@@ -279,7 +282,7 @@ keyboard.keyDown = function(note, freq) {
   oscillators[freq] = osc1;
   gainNodeTable[freq] = osc1Vol;
   osc1Vol.connect(osc1VolumePreFilter);
-  osc1Vol.gain.linearRampToValueAtTime(0.8, (now + parseInt(attack.value)));
+  osc1Vol.gain.linearRampToValueAtTime(0.3, (now + parseInt(attack.value)));
   osc1.start();
   if (lfoOn.checked) {
     // debugger
@@ -320,7 +323,6 @@ analyser.fftSize = 2048;
 const bufferLength = analyser.frequencyBinCount;
 const WIDTH = 500;
 const HEIGHT = 150;
-
 
 function draw() {
   requestAnimationFrame(draw);

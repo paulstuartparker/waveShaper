@@ -347,7 +347,7 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 }
 
 input:checked + .slider {
-  background-color: #2196F3;
+  background-color: #33cc33;
 }
 
 input:checked + .slider:before {
