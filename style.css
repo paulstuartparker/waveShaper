@@ -263,7 +263,7 @@ input[type=range]:focus::-webkit-slider-runnable-track {
   flex-direction: row;
   background-color: white;
   border: 1px solid whitesmoke;
-  justify-content: space-between;
+  justify-content: space-around;
   height: 100%;
 }
 
@@ -426,10 +426,11 @@ input:checked + .slider:before {
 }
 
 .keyboard-wrapper {
-  width: 100%;
+  /*width: 100%;*/
+  margin-top: 50px;
   display: flex;
   justify-content: center;
-  margin-left: 3.4%;
+  margin-left: 2.5%;
   position: relative;
   bottom: 0;
 }
@@ -469,22 +470,33 @@ input:checked + .slider:before {
 
 .sound-player {
   width: 150px;
+  border: 1px solid lightgrey;
+}
+
+audio {
+  background-color: #F5F5F5;
 }
 
 .record-button {
   font-family: "Josefin Slab";
   width: 100px;
   height: 40px;
+  font-size: 18px;
 }
 
 .download-button {
   font-family: "Josefin Slab";
   width: 100px;
   height: 40px;
+  font-size: 18px;
 }
 
 .download-button:hover {
-  
+  background-color: #4064e5
+}
+
+.record-button:hover {
+  background-color: #4064e5
 }
 
 .recorder {
