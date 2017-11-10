@@ -144,6 +144,7 @@ const prefilterfilter = audioCtx.createBiquadFilter;
 prefilterfilter.type = 'lowpass';
 distortionVol.gain.value = 1.6;
 const osc1VolumePreFilter = audioCtx.createGain();
+osc1VolumePreFilter.gain.value = .3;
 const preDist = audioCtx.createGain();
 const osc1wave = document.getElementById('osc1-waveform');
 const osc1octave = document.getElementById('osc1-octave');
@@ -322,7 +323,7 @@ function rampLfo(now, LfoOsc, lfoGain, lfoGainVol){
   lfoGain.connect(lfoGainVol);
   lfoGain.gain.cancelScheduledValues(now);
   lfoGain.gain.setValueAtTime(0, now);
-  lfoGain.gain.linearRampToValueAtTime(0.3, (now + parseInt(attack.value)));
+  lfoGain.gain.linearRampToValueAtTime(lfoOut.gain.value, (now + parseInt(attack.value)));
   LfoOsc.connect(lfoGain);
 
   lfoGainVol.connect(lfoVol);
@@ -338,6 +339,9 @@ keyboard.keyDown = function(note, freq) {
   if (oscillators[freq]) {
     oscillators[freq].stop(now);
   }
+  if (oscillators[freq + 6000]) {
+    oscillators[freq + 6000].stop(now);
+  }
   if (gainNodeTable[freq]) {
     osc1Vol = gainNodeTable[freq];
     osc1Vol.gain.cancelScheduledValues(now);
@@ -352,7 +356,7 @@ keyboard.keyDown = function(note, freq) {
   oscillators[freq] = osc1;
   gainNodeTable[freq] = osc1Vol;
   osc1Vol.connect(osc1VolumePreFilter);
-  osc1Vol.gain.linearRampToValueAtTime(0.3, (now + parseInt(attack.value)));
+  osc1Vol.gain.linearRampToValueAtTime(osc1VolumePreFilter.gain.value, (now + parseInt(attack.value)));
   osc1.start();
   if (lfoOn.checked) {
     // debugger
