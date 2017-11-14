@@ -23,6 +23,7 @@
   "dependencies": {
     "audio-contour": "0.0.1",
     "envelope-generator": "^3.0.0",
-    "fastidious-envelope-generator": "^2.0.0"
+    "fastidious-envelope-generator": "^2.0.0",
+    "font-awesome": "^4.7.0"
   }
 }

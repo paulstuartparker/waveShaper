@@ -93,6 +93,7 @@ volume.addEventListener('input', function() {
 //end oscillator 1
 
 //distortion node
+//Big Thanks to Google and Chris Wilson for the Distortion Algorithm.
 
 const distortionCheck = document.getElementById('toggle-distortion');
 

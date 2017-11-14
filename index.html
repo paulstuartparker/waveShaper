@@ -4,6 +4,7 @@
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Josefin+Slab" />
     <link rel="stylesheet" href="style.css"></link>
     <meta charset="utf-8">
+    <script src="https://use.fontawesome.com/6e602445b2.js"></script>
     <scipt src="script.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/qwerty-hancock/0.5.1/qwerty-hancock.min.js"></script>
     <title>Synth</title>
@@ -14,7 +15,7 @@
       <div class="oscillator-class-wrapper">
           <div class="osc1-wrapper">
             <div class="wrap-text-slider">
-            <div class="osc1-text">OSC 1</div>
+            <div class="osc1-text" id="osc1-text"><i class="fa fa-question-circle-o" aria-hidden="true"></i>  OSC 1</div>
             <input type="range" id="osc1-gain" min="0" max=".6" step=".05"></input>
           </div>
           <div class="dropdowns-container">
@@ -44,7 +45,7 @@
         <!--  -->
         <div class="osc2-wrapper">
           <div class="wrap-text-slider">
-          <div class="osc2-text">OSC 2</div>
+          <div class="osc2-text" id="osc2-text">OSC 2</div>
           <input type="range" id="osc2-gain" min="0" max=".6" step=".05" value="0"></input>
         </div>
         <div class="dropdown2-container">
@@ -74,7 +75,7 @@
         <!--  -->
         <div class="lfo-container">
           <div class="label-switch-container">
-            <label class="lfo-title">LFO</label>
+            <label class="lfo-title" id="lfo-title">LFO</label>
             <label class="switch">
             <input type="checkbox" id="toggle-lfo">
             <div class="slider round"></div>
@@ -91,11 +92,14 @@
             </div>
           </div>
       </div>
+      <div class="description-container">
+
+      </div>
     </div>
     <div class="mid-synth">
       <div class="distortion-download-row-wrapper">
       <div class="distortion-wrapper">
-        <div class="distortion-text">Toggle Distortion</div>
+        <div class="distortion-text" id="distortion-text">Toggle Distortion</div>
         <label class="distortion-switch switch">
           <input type="checkbox" id="toggle-distortion">
           <div class="slider round"></div>
@@ -107,13 +111,14 @@
         <button class="download-button" id="download">Download</button>
       </div>
       <div class="player">
+        <i class="fa fa-question-circle-o" aria-hidden="true" id="record-help"></i>
         <audio controls class="sound-player"></audio>
       </div>
       </div>
     </div>
 
         <div class="envelope-wrapper">
-          <div class="envelope-title">Envelope</div>
+          <div class="envelope-title" id="envelope-title">Envelope</div>
           <div class="attack-wrapper">
               <div class="attack-text">Attack</div>
               <input type="range" id="attack" min=".3" max="2.5"step="0.1" value=".5"></input>
@@ -131,13 +136,13 @@
       </div>
     <div class="right-synth">
     <div class="low-pass-wrapper">
-      <div class="low-pass-text">Low Pass Filter</div>
+      <div class="low-pass-text"id="lpf-text">Low Pass Filter</div>
       <div class="low-pass-slider-wrapper">
         <input id='lpf-freq' type='range' step='.5' min='0' max='100' value="100"></input>
       </div>
     </div>
     <div class="highpass-wrapper">
-      <div class="highpass-text">High Pass Filter</div>
+      <div class="highpass-text" id="hpf-text">High Pass Filter</div>
       <div class="highpass-slider-wrapper">
         <input id='hpf-freq' step='.5' type='range' min='0' max='100' value='0'></input>
       </div>
@@ -153,13 +158,25 @@
       <div class="year">2017</div>
       <div class='email'>paulstuartparker@gmail.com</div>
       <div class="github"><a href="https://github.com/paulstuartparker/" class="github">GitHub</a></div>
-      <!-- <div class="credit">A big thanks to Chris Wilson and Google for the distortion algorithm!</div> -->
+      <button class="modal-button" id="modal-open">Help</button>
+      <div class="modal" id="modal">
+
+        <div class="modal-content">
+          <span class="close-modal" id ="close">&times;</span>
+          <p>Welcome to jSynth: a digital synthesizer built with Javascript!</p>
+          <div>To get started playing, use your computer keyboard. The home key row corresponds to all of the white keys on a piano, and the row above corresponds to the black keys.</div>
+          <div>For a more in depth description of what everything does, hover your mouse over the <i class="fa fa-question-circle-o" aria-hidden="true"></i> located on each component.</div>
+        </div>
+
+      </div>
     </div>
     </div>
       </div>
       <div class="page-bottom">
 
       </div>
+
     <script src="bundle.js"></script>
+    <script src="modal.js"></script>
   </body>
 </html>
