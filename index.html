@@ -15,7 +15,7 @@
       <div class="oscillator-class-wrapper">
           <div class="osc1-wrapper">
             <div class="wrap-text-slider">
-            <div class="osc1-text" id="osc1-text"><i class="fa fa-question-circle-o" aria-hidden="true"></i>  OSC 1</div>
+            <div class="osc1-text" id="osc1-text">OSC 1</div>
             <input type="range" id="osc1-gain" min="0" max=".6" step=".05"></input>
           </div>
           <div class="dropdowns-container">
@@ -28,7 +28,7 @@
                 <option value="triangle">triangle</option>
                 <option value="sawtooth">sawtooth</option>
               </div>
-          </select>
+            </select>
           </div>
           <div class="octave-dropdown">
             <label>Octave</label>
@@ -45,7 +45,7 @@
         <!--  -->
         <div class="osc2-wrapper">
           <div class="wrap-text-slider">
-          <div class="osc2-text" id="osc2-text">OSC 2</div>
+          <div class="osc2-text" id="osc2-text"> OSC 2</div>
           <input type="range" id="osc2-gain" min="0" max=".6" step=".05" value="0"></input>
         </div>
         <div class="dropdown2-container">
@@ -75,7 +75,7 @@
         <!--  -->
         <div class="lfo-container">
           <div class="label-switch-container">
-            <label class="lfo-title" id="lfo-title">LFO</label>
+            <label class="lfo-title" id="lfo-title"> LFO</label>
             <label class="switch">
             <input type="checkbox" id="toggle-lfo">
             <div class="slider round"></div>
@@ -93,13 +93,40 @@
           </div>
       </div>
       <div class="description-container">
-
+        <div class="osc-description" id="osc-description">
+          <div class="help-title">Oscillator</div>
+          <div class="help-content">Generates a waveform which produces the sound heard through your speakers. Control it's volume with the slider, the tone with the waveform select, and the octave(how high or low the note is) with the octave select.</div>
+        </div>
+        <div class="lfo-description" id="lfo-description">
+          <div class="help-title">Low-frequency Oscillator</div>
+          <div class="help-content">Creates a rhythmic pulse connected to the frequency of an oscillator. The frequency range in this case is between 0Hz and 12Hz. The higher the frequency, the faster the pulse.  Control the volume of this oscillator with the volume slider.</div>
+        </div>
+        <div class="distortion-description" id="distortion-description">
+          <div class="help-title">Distortion</div>
+          <div class="help-content">Modulates the shape of the wave to create a new, 'fuzzier' sound.</div>
+        </div>
+        <div class="record-description" id="record-description">
+          <div class="help-title">Record/Download</div>
+          <div class="help-content">Press Record to begin recording sound.  Press Stop to stop this recording.  Click Download once you have recorded something to download.  Recordings are not saved, so clicking the record button a second time will delete the previous take.</div>
+        </div>
+        <div class="envelope-description" id="envelope-description">
+          <div class="help-title">Envelope</div>
+          <div class="help-content">Attack controls how long the note takes to reach full volume.  Release controls how long the note takes to completely stop.</div>
+        </div>
+        <div class="lpf-description" id="lpf-description">
+          <div class="help-title">Low Pass Filter</div>
+          <div class="help-content">Filters out all frequencies above a certain threshold. Allows frequencies below to 'pass' through. Can be useful for cleaning up a 'tinny' sound.</div>
+        </div>
+        <div class="hpf-description" id="hpf-description">
+          <div class="help-title">High Pass Filter</div>
+          <div class="help-content">Filters out all frequencies above a certain threshold.  Allows frequencies above to 'pass' through. Can be useful for cleaning up a muddy sound.</div>
+        </div>
       </div>
     </div>
     <div class="mid-synth">
       <div class="distortion-download-row-wrapper">
       <div class="distortion-wrapper">
-        <div class="distortion-text" id="distortion-text">Toggle Distortion</div>
+        <div class="distortion-text" id="distortion-text"> Toggle Distortion</div>
         <label class="distortion-switch switch">
           <input type="checkbox" id="toggle-distortion">
           <div class="slider round"></div>
@@ -109,16 +136,16 @@
       <div class="buttons">
         <button  class="record-button" id="record">Record</button>
         <button class="download-button" id="download">Download</button>
+        <i class="fa fa-question-circle-o" aria-hidden="true" id="record-help"></i>
       </div>
       <div class="player">
-        <i class="fa fa-question-circle-o" aria-hidden="true" id="record-help"></i>
         <audio controls class="sound-player"></audio>
       </div>
       </div>
     </div>
 
         <div class="envelope-wrapper">
-          <div class="envelope-title" id="envelope-title">Envelope</div>
+          <div class="envelope-title" id="envelope-title"> Envelope</div>
           <div class="attack-wrapper">
               <div class="attack-text">Attack</div>
               <input type="range" id="attack" min=".3" max="2.5"step="0.1" value=".5"></input>
@@ -136,19 +163,19 @@
       </div>
     <div class="right-synth">
     <div class="low-pass-wrapper">
-      <div class="low-pass-text"id="lpf-text">Low Pass Filter</div>
+      <div class="low-pass-text"id="lpf-text"> Low Pass Filter</div>
       <div class="low-pass-slider-wrapper">
         <input id='lpf-freq' type='range' step='.5' min='0' max='100' value="100"></input>
       </div>
     </div>
     <div class="highpass-wrapper">
-      <div class="highpass-text" id="hpf-text">High Pass Filter</div>
+      <div class="highpass-text" id="hpf-text"> High Pass Filter</div>
       <div class="highpass-slider-wrapper">
         <input id='hpf-freq' step='.5' type='range' min='0' max='100' value='0'></input>
       </div>
     </div>
     <div class="master-vol-wrapper">
-        <div class="master-vol-text">Master Volume</div>
+        <div class="master-vol-text"> Master Volume</div>
         <div class="master-vol-slider-wrapper">
           <input type="range" id="volume" max="1" min="0", step=".01" value="0.5"></input>
         </div>
@@ -165,7 +192,7 @@
           <span class="close-modal" id ="close">&times;</span>
           <p>Welcome to jSynth: a digital synthesizer built with Javascript!</p>
           <div>To get started playing, use your computer keyboard. The home key row corresponds to all of the white keys on a piano, and the row above corresponds to the black keys.</div>
-          <div>For a more in depth description of what everything does, hover your mouse over the <i class="fa fa-question-circle-o" aria-hidden="true"></i> located on each component.</div>
+          <div>For a more in depth description of what everything does, hover your mouse over the title of each component.</div>
         </div>
 
       </div>
@@ -175,7 +202,7 @@
       <div class="page-bottom">
 
       </div>
-
+    <script src="hover.js"></script>
     <script src="bundle.js"></script>
     <script src="modal.js"></script>
   </body>

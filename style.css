@@ -208,6 +208,7 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 
 .envelope-title {
   margin-left: 130px;
+  width: 100px;
 }
 
 .attack-wrapper {
@@ -532,10 +533,8 @@ audio {
 }
 
 .modal-button:hover {
-  width: 200px;
-  height: 60px;
   background-color: #e80b0b;
-  font-size: 30px;
+  cursor: pointer;
 }
 
 .modal {
@@ -573,4 +572,38 @@ audio {
     color: black;
     text-decoration: none;
     cursor: pointer;
+}
+
+.description-container {
+  width: 370px;
+  display: flex;
+  text-align: center;
+}
+
+.osc-description {
+  display: none;
+}
+
+.lfo-description {
+  display: none;
+}
+
+.distortion-description {
+  display: none;
+}
+
+.record-description {
+  display: none;
+}
+
+.envelope-description {
+  display: none;
+}
+
+.lpf-description {
+  display: none;
+}
+
+.hpf-description {
+  display: none;
 }

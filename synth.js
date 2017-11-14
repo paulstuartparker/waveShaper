@@ -10,7 +10,6 @@ const lpf2 = audioCtx.createBiquadFilter();
 const connectorGain = audioCtx.createGain();
 const gainNode = audioCtx.createGain();
 
-
 hpf.type='highpass';
 lpf.type='lowpass';
 lpf2.type = "lowpass";
@@ -39,8 +38,6 @@ const lfoVolume = document.getElementById('lfo-volume');
 const lpfFreq = document.getElementById('lpf-freq');
 const hpfFreq = document.getElementById('hpf-freq');
 
-
-
 // osc1
 
 const osc2VolumePreFilter = audioCtx.createGain();
@@ -56,8 +53,6 @@ const postAttackGain = document.getElementById('osc1-gain');
 const osc2wave = document.getElementById('osc2-waveform');
 const osc2octave = document.getElementById('osc2-octave');
 const postAttackGain2 = document.getElementById('osc2-gain');
-
-
 
 postAttackGain.addEventListener('input', function() {
   osc1VolumePreFilter.gain.value = postAttackGain.value;
@@ -112,8 +107,10 @@ distortionCheck.addEventListener('change', function() {
 
 
 
-var threshold = -27;
-var headroom = 21;
+let threshold = -27;
+let headroom = 17;
+//original headroom = 21
+//original thresh = -27
 
 function dBToLinear(db) {
     return Math.pow(10.0, 0.05 * db);
@@ -126,26 +123,26 @@ function e4(x, k)
 
 
 function shape(x) {
-    var linearThreshold = dBToLinear(threshold);
-    var linearHeadroom = dBToLinear(headroom);
+    let linearThreshold = dBToLinear(threshold);
+    let linearHeadroom = dBToLinear(headroom);
 
-    var maximum = 1.05 * linearHeadroom * linearThreshold;
-    var kk = (maximum - linearThreshold);
+    let maximum = 1.05 * linearHeadroom * linearThreshold;
+    let kk = (maximum - linearThreshold);
 
-    var sign = x < 0 ? -1 : +1;
-    var absx = Math.abs(x);
+    let sign = x < 0 ? -1 : +1;
+    let absx = Math.abs(x);
 
-    var shapedInput = absx < linearThreshold ? absx : linearThreshold + kk * e4(absx - linearThreshold, 1.0 / kk);
+    let shapedInput = absx < linearThreshold ? absx : linearThreshold + kk * e4(absx - linearThreshold, 1.0 / kk);
     shapedInput *= sign;
 
     return shapedInput;
 }
 
 function generateColortouchCurve(curve) {
-    var n = 65536;
-    var n2 = n / 2;
+    let n = 65536;
+    let n2 = n / 2;
 
-    for (var i = 0; i < n2; ++i) {
+    for (let i = 0; i < n2; ++i) {
         x = i / n2;
         x = shape(x);
 
@@ -158,10 +155,10 @@ function generateColortouchCurve(curve) {
 
 
 function generateMirrorCurve(curve) {
-    var n = 65536;
-    var n2 = n / 2;
+    let n = 65536;
+    let n2 = n / 2;
 
-    for (var i = 0; i < n2; ++i) {
+    for (let i = 0; i < n2; ++i) {
         x = i / n2;
         x = shape(x);
 
@@ -357,7 +354,7 @@ function draw() {
   canvas.lineWidth = 3;
   canvas.strokeStyle = 'rgb(0, 0, 0)';
   let x = 0;
-  for (var i = 0; i < bufferLength; i++) {
+  for (let i = 0; i < bufferLength; i++) {
     let val = dataArray[i];
     let percent = val / 256;
     let height = HEIGHT * percent;
