@@ -611,3 +611,7 @@ audio {
 .help-title {
   font-weight: bold;
 }
+
+.record-help {
+  font-weight: lighter;
+}
