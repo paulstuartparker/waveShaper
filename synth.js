@@ -41,7 +41,7 @@ const hpfFreq = document.getElementById('hpf-freq');
 // osc1
 
 const osc2VolumePreFilter = audioCtx.createGain();
-distortionVol.gain.value = 2.0;
+distortionVol.gain.value = 1.8;
 const osc1VolumePreFilter = audioCtx.createGain();
 osc1VolumePreFilter.gain.value = .3;
 osc2VolumePreFilter.gain.value = 0;
@@ -66,9 +66,20 @@ osc1VolumePreFilter.connect(lpf);
 
 let distConnected = false;
 connectOsc1();
+const mirrorCurve = audioCtx.createWaveShaper();
 const analyser = audioCtx.createAnalyser();
-
-
+const splitter = audioCtx.createChannelSplitter(2);
+const mirrorGain = audioCtx.createGain();
+const distGain = audioCtx.createGain();
+const merger = audioCtx.createChannelMerger(2);
+distGain.gain.value = 1;
+mirrorGain.gain.value = .7;
+splitter.connect(distortion, 0);
+splitter.connect(mirrorCurve, 1);
+distortion.connect(distGain);
+mirrorCurve.connect(mirrorGain);
+distGain.connect(distortionVol);
+mirrorGain.connect(distortionVol);
 gainNode.connect(lpf2);
 lpf2.connect(analyser);
 analyser.connect(audioCtx.destination);
@@ -76,7 +87,8 @@ analyser.connect(audioCtx.destination);
 function connectOsc1() {
 
   if (distConnected) {
-    preDist.disconnect(distortion);
+    distortionVol.disconnect(gainNode);
+    preDist.disconnect(splitter);
   }
   preDist.connect(gainNode);
   distConnected = false;
@@ -89,15 +101,14 @@ volume.addEventListener('input', function() {
 
 //distortion node
 //Big Thanks to Google and Chris Wilson for the Distortion Algorithm.
-
 const distortionCheck = document.getElementById('toggle-distortion');
 
 distortionCheck.addEventListener('change', function() {
 
   if (distortionCheck.checked) {
     preDist.disconnect(gainNode);
-    preDist.connect(distortion);
-    distortion.connect(distortionVol);
+    preDist.connect(splitter);
+    // merger.connect(distortionVol);
     distortionVol.connect(gainNode);
     distConnected = true;
   } else {
@@ -108,7 +119,7 @@ distortionCheck.addEventListener('change', function() {
 
 
 let threshold = -27;
-let headroom = 17;
+let headroom = 21;
 //original headroom = 21
 //original thresh = -27
 
@@ -170,8 +181,11 @@ function generateMirrorCurve(curve) {
 }
 
 const curve = new Float32Array(65536);
-distortion.curve = generateColortouchCurve(curve);
-distortion.oversample = '2x';
+let newCurve = generateMirrorCurve(curve);
+mirrorCurve.curve = generateMirrorCurve(curve);
+mirrorCurve.oversample = '4x';
+distortion.curve = generateColortouchCurve(newCurve);
+distortion.oversample = '4x';
 //end distortion node
 
 
