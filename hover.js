@@ -82,7 +82,6 @@ hpfHelp.addEventListener('mouseleave', function() {
   hpfDescription.style.display = 'none';
 });
 
-
 delayHelp.addEventListener('mouseover', function() {
   delayDescription.style.display = 'block';
 });

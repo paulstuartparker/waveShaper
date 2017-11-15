@@ -364,6 +364,7 @@ function rampLfo(now, LfoOsc, lfoGain, lfoGainVol){
 }
 let osc2Vol;
 let osc1Vol;
+
 keyboard.keyDown = function(note, freq) {
   let now = audioCtx.currentTime;
   const oscFilter = audioCtx.createBiquadFilter();
@@ -517,6 +518,7 @@ mediaRecorder.onstop = function(evt) {
   let audioTag = document.createElement('audio');
   document.querySelector('audio').src = URL.createObjectURL(blob);
   downloadButton.disabled = false;
+  downloadButton.className += 'active';
 };
 
 function download() {

@@ -493,7 +493,7 @@ audio {
   font-size: 18px;
 }
 
-.download-button {
+.download-button, .download-buttonactive {
   margin-top: 4px;
   font-family: "Josefin Slab";
   width: 100px;
@@ -501,8 +501,12 @@ audio {
   font-size: 18px;
 }
 
-.download-button:hover {
-  background-color: #3fbef4
+.download-buttonactive:hover {
+  background-color: #3fbef4;
+}
+
+.download-button[disabled=true]:hover {
+  background-color: whitesmoke;
 }
 
 .record-button:hover {
