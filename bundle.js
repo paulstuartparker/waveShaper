@@ -107,7 +107,6 @@ const lfoVolume = document.getElementById('lfo-volume');
 const lpfFreq = document.getElementById('lpf-freq');
 const hpfFreq = document.getElementById('hpf-freq');
 
-// osc1
 
 const osc2VolumePreFilter = audioCtx.createGain();
 distortionVol.gain.value = 1.8;
