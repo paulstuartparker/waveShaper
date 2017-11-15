@@ -422,6 +422,7 @@ const mediaRecorder = new MediaRecorder(dest.stream);
 const trigger = document.getElementById('record');
 const downloadButton = document.getElementById('download');
 downloadButton.onclick = download;
+downloadButton.disabled = true;
 lpf2.connect(dest);
 trigger.addEventListener('click', function(e) {
   if(!clicked) {
@@ -446,6 +447,7 @@ mediaRecorder.onstop = function(evt) {
   let blob = new Blob(chunks, {'type':'audio/ogg; codecs=opus'});
   let audioTag = document.createElement('audio');
   document.querySelector('audio').src = URL.createObjectURL(blob);
+  downloadButton.disabled = false;
 };
 
 function download() {
