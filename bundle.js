@@ -78,7 +78,7 @@ const lpf = audioCtx.createBiquadFilter();
 const lpf2 = audioCtx.createBiquadFilter();
 const connectorGain = audioCtx.createGain();
 const gainNode = audioCtx.createGain();
-
+gainNode.gain.value = .5;
 hpf.type='highpass';
 lpf.type='lowpass';
 lpf2.type = "lowpass";
@@ -256,7 +256,38 @@ distortion.curve = generateColortouchCurve(newCurve);
 distortion.oversample = '4x';
 //end distortion node
 
+//delay node
+const toggleDelay = document.getElementById('toggle-delay');
+const delayVolume = document.getElementById('delay-mix');
+const delayTime = document.getElementById('delay-time');
+const delay = audioCtx.createDelay();
+const delayMix = audioCtx.createGain();
+const delayFilter = audioCtx.createBiquadFilter();
+delayFilter.frequency.value = 1000;
+delay.connect(delayMix);
+delayMix.connect(delayFilter);
+delayFilter.connect(delay);
+delay.connect(lpf2);
+delayMix.gain.value = .4;
+delay.delayTime.value = 0.5;
+delayVolume.addEventListener('input', function() {
+  delayMix.gain.value = delayVolume.value;
+});
 
+delayTime.addEventListener('input', function() {
+  delay.delayTime.value = delayTime.value;
+});
+
+toggleDelay.addEventListener('change', function() {
+  if (toggleDelay.checked) {
+    gainNode.connect(delay);
+  } else {
+    gainNode.disconnect(delay);
+  }
+});
+
+
+//end delay
 
 const oscillators = {};
 let isStop = true;

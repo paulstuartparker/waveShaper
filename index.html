@@ -99,7 +99,7 @@
         </div>
         <div class="lfo-description" id="lfo-description">
           <div class="help-title">Low-frequency Oscillator</div>
-          <div class="help-content">Creates a rhythmic pulse connected to the frequency of an oscillator. The frequency range in this case is between 0Hz and 12Hz. The higher the frequency, the faster the pulse.  Control the volume of this oscillator with the volume slider.</div>
+          <div class="help-content">Creates a rhythmic pulse connected to the frequency of an oscillator. The frequency range in this case is between 0Hz and 12Hz. The higher the frequency, the faster the pulse.  Control the volume of this oscillator with the LFO Mix slider.</div>
         </div>
         <div class="distortion-description" id="distortion-description">
           <div class="help-title">Distortion</div>
@@ -174,10 +174,30 @@
         <input id='hpf-freq' step='.5' type='range' min='0' max='100' value='0'></input>
       </div>
     </div>
+    <div class="delay-wrapper">
+      <div class="delay-text">Delay
+      <label class="delay-switch switch">
+        <input type="checkbox" id="toggle-delay">
+        <div class="slider round"></div>
+      </label>
+      </div>
+      <div class="delay-vol-slider-wrapper">
+        <div class="delay-vol-text">Gain</div>
+        <input type="range" id="delay-mix" max="0.8" min="0" value=".4" step=".01">
+      </div>
+      <div class="delay-time-slider-wrapper">
+        <div class="delay-time-text">Rate</div>
+        <input type="range" id="delay-time" max="1.0" min=".2" step=".01" value=".5">
+      </div>
+      <!-- <div class="delay-time-slider-wrapper"> -->
+        <!-- <div class="delay-time-text">Rate</div>
+        <input type="range" id="delay-time" max="2.0" min = ".1" step=".1"> -->
+      <!-- </div> -->
+    </div>
     <div class="master-vol-wrapper">
         <div class="master-vol-text"> Master Volume</div>
         <div class="master-vol-slider-wrapper">
-          <input type="range" id="volume" max="1" min="0", step=".01" value="0.5"></input>
+          <input type="range" id="volume" max="1" min="0" step=".01" value="0.5"></input>
         </div>
     </div>
     <div class="links-container">
