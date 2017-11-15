@@ -109,7 +109,7 @@ const hpfFreq = document.getElementById('hpf-freq');
 
 
 const osc2VolumePreFilter = audioCtx.createGain();
-distortionVol.gain.value = 1.8;
+distortionVol.gain.value = 1;
 const osc1VolumePreFilter = audioCtx.createGain();
 osc1VolumePreFilter.gain.value = .3;
 osc2VolumePreFilter.gain.value = 0;
@@ -263,7 +263,7 @@ const delayTime = document.getElementById('delay-time');
 const delay = audioCtx.createDelay();
 const delayMix = audioCtx.createGain();
 const delayFilter = audioCtx.createBiquadFilter();
-delayFilter.frequency.value = 1000;
+delayFilter.frequency.value = 900;
 delay.connect(delayMix);
 delayMix.connect(delayFilter);
 delayFilter.connect(delay);
