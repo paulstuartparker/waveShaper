@@ -121,6 +121,10 @@
           <div class="help-title">High Pass Filter</div>
           <div class="help-content">Filters out all frequencies below a certain threshold.  Allows frequencies above to 'pass' through. Can be useful for cleaning up a muddy sound.</div>
         </div>
+        <div class="delay-description" id="delay-description">
+          <div class="help-title">Delay</div>
+          <div class="help-content">Causes the note to be repeated after it is played.  Gain determines the amount of times the note will be repeated as well as it's intensity.  Rate determines the amount of time between the repeated notes.</div>
+        </div>
       </div>
     </div>
     <div class="mid-synth">
@@ -175,7 +179,8 @@
       </div>
     </div>
     <div class="delay-wrapper">
-      <div class="delay-text">Delay
+      <div class="delay-text">
+        <div id="delay-label">Delay</div>
       <label class="delay-switch switch">
         <input type="checkbox" id="toggle-delay">
         <div class="slider round"></div>

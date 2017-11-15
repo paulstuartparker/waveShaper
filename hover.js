@@ -5,11 +5,13 @@ const distortionHelp = document.getElementById("distortion-text");
 const envelopeHelp = document.getElementById("envelope-title");
 const lpfHelp = document.getElementById("lpf-text");
 const hpfHelp = document.getElementById("hpf-text");
+const delayHelp = document.getElementById("delay-label");
 const lpfDescription = document.getElementById("lpf-description");
 const hpfDescription = document.getElementById("hpf-description");
 const oscDescription = document.getElementById("osc-description");
 const lfoDescription = document.getElementById("lfo-description");
 const distDescription = document.getElementById("distortion-description");
+const delayDescription = document.getElementById("delay-description");
 const recordHelp = document.getElementById("record-help");
 const recordDescription = document.getElementById("record-description");
 const envelopeDescription = document.getElementById("envelope-description");
@@ -54,6 +56,7 @@ recordHelp.addEventListener('mouseleave', function() {
 });
 
 
+
 envelopeHelp.addEventListener('mouseover', function() {
   envelopeDescription.style.display = 'block';
 });
@@ -77,4 +80,13 @@ hpfHelp.addEventListener('mouseover', function() {
 
 hpfHelp.addEventListener('mouseleave', function() {
   hpfDescription.style.display = 'none';
+});
+
+
+delayHelp.addEventListener('mouseover', function() {
+  delayDescription.style.display = 'block';
+});
+
+delayHelp.addEventListener('mouseleave', function() {
+  delayDescription.style.display = 'none';
 });

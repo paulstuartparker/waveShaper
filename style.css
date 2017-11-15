@@ -612,6 +612,10 @@ audio {
   display: none;
 }
 
+.delay-description {
+  display: none;
+}
+
 .help-title {
   font-weight: bold;
 }
