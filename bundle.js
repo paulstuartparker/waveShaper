@@ -78,7 +78,7 @@ const lpf = audioCtx.createBiquadFilter();
 const lpf2 = audioCtx.createBiquadFilter();
 const connectorGain = audioCtx.createGain();
 const gainNode = audioCtx.createGain();
-gainNode.gain.value = .5;
+gainNode.gain.value = .95;
 hpf.type='highpass';
 lpf.type='lowpass';
 lpf2.type = "lowpass";
@@ -140,6 +140,8 @@ const splitter = audioCtx.createChannelSplitter(2);
 const mirrorGain = audioCtx.createGain();
 const distGain = audioCtx.createGain();
 const merger = audioCtx.createChannelMerger(2);
+const masterVolume = audioCtx.createGain();
+masterVolume.gain.value = 0.5;
 distGain.gain.value = .95;
 mirrorGain.gain.value = .65;
 splitter.connect(distortion, 0);
@@ -149,7 +151,9 @@ mirrorCurve.connect(mirrorGain);
 distGain.connect(distortionVol);
 mirrorGain.connect(distortionVol);
 gainNode.connect(lpf2);
-lpf2.connect(analyser);
+
+lpf2.connect(masterVolume);
+masterVolume.connect(analyser);
 analyser.connect(audioCtx.destination);
 
 function connectOsc1() {
@@ -163,7 +167,7 @@ function connectOsc1() {
 }
 
 volume.addEventListener('input', function() {
-  gainNode.gain.value = volume.value;
+  masterVolume.gain.value = volume.value;
 });
 //end oscillator 1
 
