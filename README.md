@@ -11,6 +11,7 @@ based on another oscillators frequency.
 
 The signal is then processed through various audio nodes and effects, and ultimately routed to the speakers as well as an audio
 analyser node, which generates the waveform display with the use of a method called getByteTimeData and canvas. 
+
 ![delay](delay.gif)
 
 It makes extensive use of the web audio api, as well as a library for the keyboard called 'querty hancock'.  In building this project
