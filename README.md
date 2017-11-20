@@ -1,7 +1,7 @@
 # waveShaper
 
 WaveShaper is a fully functional digital synthesizer built in javascript.
-check out the live version [synth]("https://paulstuartparker.github.io/waveShaper/" #here)
+check out the live version [synth](https://paulstuartparker.github.io/waveShaper/ "here")
 
 ## Implementation
 
