@@ -53,6 +53,6 @@ about how to use it.
 
 ![modal](modal.gif)
 
-This project uses the library  [querty hancock] for the keyboard, and maps the output from the user keypress to the appropriate note in Hz to a new audio oscillator.
+This project uses the library  [querty hancock] for the keyboard, and maps the output from the user keypress in Hz to a new audio oscillator.
 
 
