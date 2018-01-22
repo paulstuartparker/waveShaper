@@ -14,7 +14,7 @@ analyser node, which generates the waveform display with the use of a method cal
 
 Since the amount of Hz between notes increases exponentially as pitch increases (see image below), the Low Pass Filter and High Pass Filter feature logarithmically scaled sliders, ensuring that the slider action matches our perception of frequency, providing a better and more intuitave user experience.
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/8/8e/Music_frequency_diatonic_scale-3.svg" alt="Drawing" style="width: 200px;"/>
+<img src="http://acousticslab.org/psychoacoustics/PMFiles/PMImages/PitchVsFrequency.jpg" alt="Drawing" style="width: 200px;"/>
 
 Code for scaled sliders: 
 ```ruby
