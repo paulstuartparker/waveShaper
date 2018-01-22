@@ -5,7 +5,7 @@ Check out the live version [Here](https://paulstuartparker.github.io/waveShaper/
 
 ## Implementation
 
-waveShaper makes extensive use of the web audio api, some dsp techniques, and an organized but intricate audio graph for the routing.
+waveShaper makes use of the web audio api, common audio dsp techniques, and an organized audio graph for the routing.
 There are two oscillators which generate the signal, as well as a low-frequency oscillator which generates a sine wave and modulates volume 
 based on another oscillators frequency.  
 
