@@ -9,7 +9,7 @@ const lpf = audioCtx.createBiquadFilter();
 const lpf2 = audioCtx.createBiquadFilter();
 const connectorGain = audioCtx.createGain();
 const gainNode = audioCtx.createGain();
-gainNode.gain.value = .95;
+gainNode.gain.value = 1;
 hpf.type='highpass';
 lpf.type='lowpass';
 lpf2.type = "lowpass";
@@ -40,9 +40,9 @@ const hpfFreq = document.getElementById('hpf-freq');
 
 
 const osc2VolumePreFilter = audioCtx.createGain();
-distortionVol.gain.value = 1;
+distortionVol.gain.value = 1.5;
 const osc1VolumePreFilter = audioCtx.createGain();
-osc1VolumePreFilter.gain.value = .3;
+osc1VolumePreFilter.gain.value = .5;
 osc2VolumePreFilter.gain.value = 0;
 
 const preDist = audioCtx.createGain();
@@ -59,7 +59,7 @@ postAttackGain.addEventListener('input', function() {
 postAttackGain2.addEventListener('input', function() {
   osc2VolumePreFilter.gain.value = postAttackGain2.value;
 });
-preDist.gain.value = .9;
+preDist.gain.value = .85;
 osc2VolumePreFilter.connect(lpf);
 osc1VolumePreFilter.connect(lpf);
 
@@ -73,18 +73,26 @@ const distGain = audioCtx.createGain();
 const merger = audioCtx.createChannelMerger(2);
 const masterVolume = audioCtx.createGain();
 masterVolume.gain.value = 0.5;
-distGain.gain.value = .95;
-mirrorGain.gain.value = .65;
+distGain.gain.value = 2;
+mirrorGain.gain.value = 2;
 splitter.connect(distortion, 0);
 splitter.connect(mirrorCurve, 1);
 distortion.connect(distGain);
 mirrorCurve.connect(mirrorGain);
 distGain.connect(distortionVol);
 mirrorGain.connect(distortionVol);
+const compressor = audioCtx.createDynamicsCompressor();
+compressor.threshold.value = -21;
+compressor.knee.value = 16;
+compressor.ratio.value = 2;
+compressor.attack.value = 0;
+compressor.release.value = 0.15;
+
 gainNode.connect(lpf2);
 
 lpf2.connect(masterVolume);
-masterVolume.connect(analyser);
+masterVolume.connect(compressor);
+compressor.connect(analyser);
 analyser.connect(audioCtx.destination);
 
 function connectOsc1() {
@@ -121,8 +129,8 @@ distortionCheck.addEventListener('change', function() {
 
 
 
-let threshold = -27;
-let headroom = 21;
+let threshold = -21;
+let headroom = 7;
 //original headroom = 21
 //original thresh = -27
 
@@ -186,9 +194,9 @@ function generateMirrorCurve(curve) {
 const curve = new Float32Array(65536);
 let newCurve = generateMirrorCurve(curve);
 mirrorCurve.curve = generateMirrorCurve(curve);
-mirrorCurve.oversample = '4x';
+mirrorCurve.oversample = '2x';
 distortion.curve = generateColortouchCurve(newCurve);
-distortion.oversample = '4x';
+distortion.oversample = '2x';
 //end distortion node
 
 //delay node
@@ -282,7 +290,7 @@ lfoknob.addEventListener('input', function() {
 const lfoTable = {};
 const lfo = audioCtx.createOscillator();
 const lfoOut = audioCtx.createGain();
-lfoOut.gain.value = .2;
+lfoOut.gain.value = .3;
 lfo.connect(lfoVol.gain);
 lfoVol.connect(lfoOut);
 lfoOut.connect(lpf);
@@ -292,7 +300,7 @@ function rampLfo(now, LfoOsc, lfoGain, lfoGainVol){
   lfoGain.connect(lfoGainVol);
   lfoGain.gain.cancelScheduledValues(now);
   lfoGain.gain.setValueAtTime(0, now);
-  lfoGain.gain.linearRampToValueAtTime(lfoOut.gain.value, (now + parseInt(attack.value)));
+  lfoGain.gain.linearRampToValueAtTime(lfoOut.gain.value, (now + parseFloat(attack.value)));
   LfoOsc.connect(lfoGain);
 
   lfoGainVol.connect(lfoVol);
@@ -343,8 +351,8 @@ keyboard.keyDown = function(note, freq) {
   osc2.frequency.value = (freq * octaveTable[osc2octave.value]);
   osc2Vol.connect(osc2VolumePreFilter);
   osc1Vol.connect(osc1VolumePreFilter);
-  osc1Vol.gain.linearRampToValueAtTime(osc1VolumePreFilter.gain.value, (now + parseInt(attack.value)));
-  osc2Vol.gain.linearRampToValueAtTime(osc2VolumePreFilter.gain.value, (now + parseInt(attack.value)));
+  osc1Vol.gain.linearRampToValueAtTime(osc1VolumePreFilter.gain.value, (now + parseFloat(attack.value)));
+  osc2Vol.gain.linearRampToValueAtTime(osc2VolumePreFilter.gain.value, (now + parseFloat(attack.value)));
 
   osc1.start();
   osc2.start();
@@ -368,22 +376,22 @@ keyboard.keyUp = function(note, freq) {
     const gain2 = gainNodeTable[freq + 20000].gain.value;
     gainNodeTable[freq].gain.cancelScheduledValues(now);
     gainNodeTable[freq].gain.setValueAtTime(gain, now);
-    gainNodeTable[freq].gain.exponentialRampToValueAtTime(0.0001, now + parseInt(decay.value));
+    gainNodeTable[freq].gain.exponentialRampToValueAtTime(0.0001, now + parseFloat(decay.value));
     // debugger
     gainNodeTable[freq + 20000].gain.cancelScheduledValues(now);
     gainNodeTable[freq + 20000].gain.setValueAtTime(gain2, now);
-    gainNodeTable[freq + 20000].gain.exponentialRampToValueAtTime(0.0001, now + parseInt(decay.value));
-    oscillators[freq].stop(now + parseInt(decay.value));
-    oscillators[freq + 20000].stop(now + parseInt(decay.value));
+    gainNodeTable[freq + 20000].gain.exponentialRampToValueAtTime(0.0001, now + parseFloat(decay.value));
+    oscillators[freq].stop(now + parseFloat(decay.value));
+    oscillators[freq + 20000].stop(now + parseFloat(decay.value));
 
     if (oscillators[freq + 6000]) {
-      oscillators[freq + 6000].stop(now + parseInt(decay.value));
+      oscillators[freq + 6000].stop(now + parseFloat(decay.value));
     }
     if (lfoTable[freq] ) {
       let lfoGain = lfoTable[freq + 12025];
       lfoGain.gain.cancelScheduledValues(now);
       lfoGain.gain.setValueAtTime(lfoVol.gain.value, now);
-      lfoGain.gain.exponentialRampToValueAtTime(0.0001, now + parseInt(decay.value));
+      lfoGain.gain.exponentialRampToValueAtTime(0.0001, now + parseFloat(decay.value));
     }
 };
 
