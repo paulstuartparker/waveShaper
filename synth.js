@@ -9,7 +9,7 @@ const lpf = audioCtx.createBiquadFilter();
 const lpf2 = audioCtx.createBiquadFilter();
 const connectorGain = audioCtx.createGain();
 const gainNode = audioCtx.createGain();
-gainNode.gain.value = .95;
+gainNode.gain.value = 1.19;
 hpf.type='highpass';
 lpf.type='lowpass';
 lpf2.type = "lowpass";
@@ -40,9 +40,9 @@ const hpfFreq = document.getElementById('hpf-freq');
 
 
 const osc2VolumePreFilter = audioCtx.createGain();
-distortionVol.gain.value = 1;
+distortionVol.gain.value = 1.5;
 const osc1VolumePreFilter = audioCtx.createGain();
-osc1VolumePreFilter.gain.value = .3;
+osc1VolumePreFilter.gain.value = .7;
 osc2VolumePreFilter.gain.value = 0;
 
 const preDist = audioCtx.createGain();
@@ -59,7 +59,7 @@ postAttackGain.addEventListener('input', function() {
 postAttackGain2.addEventListener('input', function() {
   osc2VolumePreFilter.gain.value = postAttackGain2.value;
 });
-preDist.gain.value = .9;
+preDist.gain.value = .95;
 osc2VolumePreFilter.connect(lpf);
 osc1VolumePreFilter.connect(lpf);
 
@@ -72,9 +72,9 @@ const mirrorGain = audioCtx.createGain();
 const distGain = audioCtx.createGain();
 const merger = audioCtx.createChannelMerger(2);
 const masterVolume = audioCtx.createGain();
-masterVolume.gain.value = 0.5;
-distGain.gain.value = .95;
-mirrorGain.gain.value = .65;
+masterVolume.gain.value = 0.7;
+distGain.gain.value = 2;
+mirrorGain.gain.value = 2;
 splitter.connect(distortion, 0);
 splitter.connect(mirrorCurve, 1);
 distortion.connect(distGain);
@@ -84,7 +84,14 @@ mirrorGain.connect(distortionVol);
 gainNode.connect(lpf2);
 
 lpf2.connect(masterVolume);
-masterVolume.connect(analyser);
+const compressor = audioCtx.createDynamicsCompressor();
+masterVolume.connect(compressor);
+compressor.threshold.value = -24;
+compressor.knee.value = 20;
+compressor.ratio.value = 6;
+compressor.attack.value = .001;
+compressor.release.value = 0.15;
+compressor.connect(analyser);
 analyser.connect(audioCtx.destination);
 
 function connectOsc1() {
@@ -122,7 +129,7 @@ distortionCheck.addEventListener('change', function() {
 
 
 let threshold = -27;
-let headroom = 21;
+let headroom = 7;
 //original headroom = 21
 //original thresh = -27
 
@@ -282,7 +289,7 @@ lfoknob.addEventListener('input', function() {
 const lfoTable = {};
 const lfo = audioCtx.createOscillator();
 const lfoOut = audioCtx.createGain();
-lfoOut.gain.value = .2;
+lfoOut.gain.value = .3;
 lfo.connect(lfoVol.gain);
 lfoVol.connect(lfoOut);
 lfoOut.connect(lpf);
