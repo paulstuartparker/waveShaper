@@ -42,7 +42,7 @@ const hpfFreq = document.getElementById('hpf-freq');
 const osc2VolumePreFilter = audioCtx.createGain();
 distortionVol.gain.value = 1.5;
 const osc1VolumePreFilter = audioCtx.createGain();
-osc1VolumePreFilter.gain.value = .7;
+osc1VolumePreFilter.gain.value = .3;
 osc2VolumePreFilter.gain.value = 0;
 
 const preDist = audioCtx.createGain();
@@ -59,7 +59,7 @@ postAttackGain.addEventListener('input', function() {
 postAttackGain2.addEventListener('input', function() {
   osc2VolumePreFilter.gain.value = postAttackGain2.value;
 });
-preDist.gain.value = .95;
+preDist.gain.value = .9;
 osc2VolumePreFilter.connect(lpf);
 osc1VolumePreFilter.connect(lpf);
 
@@ -350,8 +350,8 @@ keyboard.keyDown = function(note, freq) {
   osc2.frequency.value = (freq * octaveTable[osc2octave.value]);
   osc2Vol.connect(osc2VolumePreFilter);
   osc1Vol.connect(osc1VolumePreFilter);
-  osc1Vol.gain.linearRampToValueAtTime(osc1VolumePreFilter.gain.value, (now + parseInt(attack.value)));
-  osc2Vol.gain.linearRampToValueAtTime(osc2VolumePreFilter.gain.value, (now + parseInt(attack.value)));
+  osc1Vol.gain.linearRampToValueAtTime(osc1VolumePreFilter.gain.value, (now + parseFloat(attack.value)));
+  osc2Vol.gain.linearRampToValueAtTime(osc2VolumePreFilter.gain.value, (now + parseFloat(attack.value)));
 
   osc1.start();
   osc2.start();
@@ -375,22 +375,22 @@ keyboard.keyUp = function(note, freq) {
     const gain2 = gainNodeTable[freq + 20000].gain.value;
     gainNodeTable[freq].gain.cancelScheduledValues(now);
     gainNodeTable[freq].gain.setValueAtTime(gain, now);
-    gainNodeTable[freq].gain.exponentialRampToValueAtTime(0.0001, now + parseInt(decay.value));
+    gainNodeTable[freq].gain.exponentialRampToValueAtTime(0.0001, now + parseFloat(decay.value));
     // debugger
     gainNodeTable[freq + 20000].gain.cancelScheduledValues(now);
     gainNodeTable[freq + 20000].gain.setValueAtTime(gain2, now);
-    gainNodeTable[freq + 20000].gain.exponentialRampToValueAtTime(0.0001, now + parseInt(decay.value));
-    oscillators[freq].stop(now + parseInt(decay.value));
-    oscillators[freq + 20000].stop(now + parseInt(decay.value));
+    gainNodeTable[freq + 20000].gain.exponentialRampToValueAtTime(0.0001, now + parseFloat(decay.value));
+    oscillators[freq].stop(now + parseFloat(decay.value));
+    oscillators[freq + 20000].stop(now + parseFloat(decay.value));
 
     if (oscillators[freq + 6000]) {
-      oscillators[freq + 6000].stop(now + parseInt(decay.value));
+      oscillators[freq + 6000].stop(now + parseFloat(decay.value));
     }
     if (lfoTable[freq] ) {
       let lfoGain = lfoTable[freq + 12025];
       lfoGain.gain.cancelScheduledValues(now);
       lfoGain.gain.setValueAtTime(lfoVol.gain.value, now);
-      lfoGain.gain.exponentialRampToValueAtTime(0.0001, now + parseInt(decay.value));
+      lfoGain.gain.exponentialRampToValueAtTime(0.0001, now + parseFloat(decay.value));
     }
 };
 
