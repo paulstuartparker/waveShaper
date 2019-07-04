@@ -299,7 +299,7 @@ function rampLfo(now, LfoOsc, lfoGain, lfoGainVol){
   lfoGain.connect(lfoGainVol);
   lfoGain.gain.cancelScheduledValues(now);
   lfoGain.gain.setValueAtTime(0, now);
-  lfoGain.gain.linearRampToValueAtTime(lfoOut.gain.value, (now + parseInt(attack.value)));
+  lfoGain.gain.linearRampToValueAtTime(lfoOut.gain.value, (now + parseFloat(attack.value)));
   LfoOsc.connect(lfoGain);
 
   lfoGainVol.connect(lfoVol);
