@@ -42,7 +42,7 @@ const hpfFreq = document.getElementById('hpf-freq');
 const osc2VolumePreFilter = audioCtx.createGain();
 distortionVol.gain.value = 1.5;
 const osc1VolumePreFilter = audioCtx.createGain();
-osc1VolumePreFilter.gain.value = .3;
+osc1VolumePreFilter.gain.value = .5;
 osc2VolumePreFilter.gain.value = 0;
 
 const preDist = audioCtx.createGain();
@@ -59,7 +59,7 @@ postAttackGain.addEventListener('input', function() {
 postAttackGain2.addEventListener('input', function() {
   osc2VolumePreFilter.gain.value = postAttackGain2.value;
 });
-preDist.gain.value = .9;
+preDist.gain.value = .85;
 osc2VolumePreFilter.connect(lpf);
 osc1VolumePreFilter.connect(lpf);
 
@@ -72,7 +72,7 @@ const mirrorGain = audioCtx.createGain();
 const distGain = audioCtx.createGain();
 const merger = audioCtx.createChannelMerger(2);
 const masterVolume = audioCtx.createGain();
-masterVolume.gain.value = 0.7;
+masterVolume.gain.value = 0.5;
 distGain.gain.value = 2;
 mirrorGain.gain.value = 2;
 splitter.connect(distortion, 0);
@@ -81,16 +81,17 @@ distortion.connect(distGain);
 mirrorCurve.connect(mirrorGain);
 distGain.connect(distortionVol);
 mirrorGain.connect(distortionVol);
+const compressor = audioCtx.createDynamicsCompressor();
+compressor.threshold.value = -21;
+compressor.knee.value = 24;
+compressor.ratio.value = 4;
+compressor.attack.value = 0;
+compressor.release.value = 0.15;
+
 gainNode.connect(lpf2);
 
 lpf2.connect(masterVolume);
-const compressor = audioCtx.createDynamicsCompressor();
 masterVolume.connect(compressor);
-compressor.threshold.value = -24;
-compressor.knee.value = 24;
-compressor.ratio.value = 4;
-compressor.attack.value = .001;
-compressor.release.value = 0.15;
 compressor.connect(analyser);
 analyser.connect(audioCtx.destination);
 
@@ -193,9 +194,9 @@ function generateMirrorCurve(curve) {
 const curve = new Float32Array(65536);
 let newCurve = generateMirrorCurve(curve);
 mirrorCurve.curve = generateMirrorCurve(curve);
-mirrorCurve.oversample = '4x';
+mirrorCurve.oversample = '2x';
 distortion.curve = generateColortouchCurve(newCurve);
-distortion.oversample = '4x';
+distortion.oversample = '2x';
 //end distortion node
 
 //delay node
