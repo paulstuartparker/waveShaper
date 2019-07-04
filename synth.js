@@ -9,7 +9,7 @@ const lpf = audioCtx.createBiquadFilter();
 const lpf2 = audioCtx.createBiquadFilter();
 const connectorGain = audioCtx.createGain();
 const gainNode = audioCtx.createGain();
-gainNode.gain.value = 1.19;
+gainNode.gain.value = 1;
 hpf.type='highpass';
 lpf.type='lowpass';
 lpf2.type = "lowpass";
@@ -87,8 +87,8 @@ lpf2.connect(masterVolume);
 const compressor = audioCtx.createDynamicsCompressor();
 masterVolume.connect(compressor);
 compressor.threshold.value = -24;
-compressor.knee.value = 20;
-compressor.ratio.value = 6;
+compressor.knee.value = 24;
+compressor.ratio.value = 4;
 compressor.attack.value = .001;
 compressor.release.value = 0.15;
 compressor.connect(analyser);
@@ -128,7 +128,7 @@ distortionCheck.addEventListener('change', function() {
 
 
 
-let threshold = -27;
+let threshold = -21;
 let headroom = 7;
 //original headroom = 21
 //original thresh = -27
