@@ -83,8 +83,8 @@ distGain.connect(distortionVol);
 mirrorGain.connect(distortionVol);
 const compressor = audioCtx.createDynamicsCompressor();
 compressor.threshold.value = -21;
-compressor.knee.value = 24;
-compressor.ratio.value = 4;
+compressor.knee.value = 16;
+compressor.ratio.value = 2;
 compressor.attack.value = 0;
 compressor.release.value = 0.15;
 
